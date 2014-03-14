@@ -1,0 +1,4 @@
+db.driver=com.mysql.jdbc.Driver
+db.url=jdbc:mysql://172.16.33.11,172.16.33.12,172.16.33.13:3306/ycsb_database
+db.user=ycsb_user
+db.passwd=ycsb_password

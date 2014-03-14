@@ -1,0 +1,1 @@
+ssh root@172.16.33.17 'su riak -c "riak start; riak-admin cluster join riak@172.16.33.16; riak-admin cluster plan; riak-admin cluster commit"'

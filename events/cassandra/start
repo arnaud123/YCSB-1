@@ -1,0 +1,1 @@
+ssh root@172.16.33.17 'systemctl start cassandra'

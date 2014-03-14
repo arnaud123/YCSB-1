@@ -1,0 +1,1 @@
+ssh root@172.16.33.17 'systemctl stop cassandra; rm -rf /var/lib/cassandra/commitlog/*; rm -rf /var/lib/cassandra/data/*; rm -rf /var/lib/cassandra/saved_caches/*; systemctl start cassandra'

@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<events>
+<event id="Down" startInMS="300000">
+/root/YCSB/events/riak/kill
+</event>
+<event id="Up" startInMS="600000">
+/root/YCSB/events/riak/start
+</event>
+</events>
