@@ -1,0 +1,2 @@
+root@172.16.33.13 'iptables -D INPUT 2'
+root@172.16.33.13 'iptables -D OUTPUT 2'

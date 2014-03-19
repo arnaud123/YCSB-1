@@ -1,0 +1,11 @@
+ssh root@172.16.33.17 'iptables -A INPUT -p tcp --dport 8098 -j DROP'
+ssh root@172.16.33.17 'iptables -A OUTPUT -p tcp --dport 8098 -j DROP'
+
+ssh root@172.16.33.17 'iptables -A INPUT -p tcp --dport 8087 -j DROP'
+ssh root@172.16.33.17 'iptables -A OUTPUT -p tcp --dport 8087 -j DROP'
+
+ssh root@172.16.33.17 'iptables -A INPUT -p tcp --dport 4369 -j DROP'
+ssh root@172.16.33.17 'iptables -A OUTPUT -p tcp --dport 4369 -j DROP'
+
+ssh root@172.16.33.17 'iptables -A INPUT -p tcp --dport 8099 -j DROP'
+ssh root@172.16.33.17 'iptables -A OUTPUT -p tcp --dport 8099 -j DROP'

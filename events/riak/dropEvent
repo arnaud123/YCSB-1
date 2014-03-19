@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<events>
+<event id="Down" startInMS="900000">
+/root/YCSB/events/riak/addIptablesRules
+</event>
+<event id="Up" startInMS="1200000">
+/root/YCSB/events/riak/removeIptablesRules
+</event>
+</events>
