@@ -1,2 +1,2 @@
 ssh root@172.16.33.13 'iptables -A INPUT -p tcp --dport 5984 -j DROP'
-ssh root@172.16.33.13 'iptables -A OUTPUT -p tcp --dport 5984 -j DROP'
+ssh root@172.16.33.13 'iptables -A OUTPUT -p tcp --sport 5984 -j DROP'
