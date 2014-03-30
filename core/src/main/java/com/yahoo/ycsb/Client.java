@@ -578,10 +578,14 @@ public class Client {
 		if (!checkRequiredProperties(props)) {
 			System.exit(0);
 		}
-
-		if(props.getProperty(CONSISTENCY_TEST_PROPERTY) != null)
-			checkRequiredConsistencyTestParameters(props);
 		
+		if(props.getProperty(CONSISTENCY_TEST_PROPERTY) != null){
+			boolean consistencyTest = Boolean.parseBoolean(props.getProperty(CONSISTENCY_TEST_PROPERTY).toLowerCase());
+			if(consistencyTest){
+				checkRequiredConsistencyTestParameters(props);
+			}
+		}
+
 		long maxExecutionTime = Integer.parseInt(props.getProperty(
 				MAX_EXECUTION_TIME, "0"));
 
