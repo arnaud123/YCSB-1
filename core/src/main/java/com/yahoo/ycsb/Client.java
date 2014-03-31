@@ -447,7 +447,6 @@ public class Client {
 		int target = 0;
 		boolean status = false;
 		String label = "";
-		final String CONSISTENCY_TEST_PROPERTY = "consistencyTest";
 
 		// parse arguments
 		int argindex = 0;
@@ -578,12 +577,10 @@ public class Client {
 		if (!checkRequiredProperties(props)) {
 			System.exit(0);
 		}
+	
 		
-		if(props.getProperty(CONSISTENCY_TEST_PROPERTY) != null){
-			boolean consistencyTest = Boolean.parseBoolean(props.getProperty(CONSISTENCY_TEST_PROPERTY).toLowerCase());
-			if(consistencyTest){
-				checkRequiredConsistencyTestParameters(props);
-			}
+		if(isConsistencyTestRequested(props)){
+			checkRequiredConsistencyTestParameters(props);
 		}
 
 		long maxExecutionTime = Integer.parseInt(props.getProperty(
@@ -740,13 +737,14 @@ public class Client {
 	private static final String READ_PROPORTION_CONSISTENCY_CHECK_PROPERTY = "readProportionConsistencyCheck";
 	private static final String UPDATE_PROPORTION_CONSISNTECY_CHECK_PROPERTY = "updateProportionConsistencyCheck";
 	private static final String ADD_SEPARATE_WORKLOAD_PROPERTY = "addSeparateWorkload";
-	
+	private static final String CONSISTENCY_TEST_PROPERTY = "consistencyTest";
+
 	private static Vector<Thread> createClientThreads(String dbname,
 			Properties props, boolean dotransactions, int threadcount,
 			double targetperthreadperms, int opcount, ConsistencyMeasurements measurements) throws ClassNotFoundException {
 		ClassLoader classLoader = Client.class.getClassLoader();
 		Vector<Thread> threads = new Vector<Thread>();
-		if(props.getProperty("consistencyTest") != null){
+		if(isConsistencyTestRequested(props)){
 			Properties propsConsistencyCheck = addConsistencyCheckOperationDistribution(props);
 			Thread writerThread = createWriterThreads(dbname, propsConsistencyCheck,
 					dotransactions, opcount, measurements);
@@ -754,7 +752,7 @@ public class Client {
 					opcount, measurements);
 			threads.add(writerThread);
 		}
-		if(props.getProperty("consistencyTest") == null || props.getProperty(ADD_SEPARATE_WORKLOAD_PROPERTY) != null){
+		if(!isConsistencyTestRequested(props) || props.getProperty(ADD_SEPARATE_WORKLOAD_PROPERTY) != null){
 			Class<?> workloadclass = classLoader.loadClass(props.getProperty(WORKLOAD_PROPERTY));
 			Workload workload = createWorkload(props, workloadclass);
 			// Thread id is hier niet belangrijk
@@ -913,6 +911,13 @@ public class Client {
 		opcount = splitOperationOverThreads ? (opcount / threadcount) : opcount;
 		return new ClientThread(db, dotransactions, workload, threadid,
 				threadcount, props, opcount, targetperthreadperms);
+	}
+
+        private static boolean isConsistencyTestRequested(Properties props){
+		if(props.getProperty(CONSISTENCY_TEST_PROPERTY) != null){
+			return Boolean.parseBoolean(props.getProperty(CONSISTENCY_TEST_PROPERTY).toLowerCase());
+		}
+		return false;
 	}
 	
 	private static void checkRequiredConsistencyTestParameters(Properties prop){
