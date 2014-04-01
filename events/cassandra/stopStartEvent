@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <events>
-<event id="Down" startInMS="900000">
+<event id="Down" startInMS="600000">
 /root/YCSB/events/cassandra/stop
 </event>
-<event id="Up" startInMS="1200000">
+<event id="Up" startInMS="900000">
 /root/YCSB/events/cassandra/start
 </event>
 </events>
