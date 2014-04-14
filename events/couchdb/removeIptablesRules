@@ -1,2 +1,7 @@
-ssh root@172.16.33.13 'iptables -D INPUT 2'
-ssh root@172.16.33.13 'iptables -D OUTPUT 2'
+for i in `seq 1 2`
+do
+	ssh root@172.16.33.13 'iptables -D INPUT 2'
+	ssh root@172.16.33.13 'iptables -D OUTPUT 2'
+done
+
+
