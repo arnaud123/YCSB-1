@@ -1,7 +1,7 @@
 for i in `seq 1 2`
 do
-	ssh root@172.16.33.13 'iptables -D INPUT 2'
-	ssh root@172.16.33.13 'iptables -D OUTPUT 2'
+	ssh root@172.16.33.13 'iptables -D INPUT 1'
+	ssh root@172.16.33.13 'iptables -D OUTPUT 1'
 done
 
 
