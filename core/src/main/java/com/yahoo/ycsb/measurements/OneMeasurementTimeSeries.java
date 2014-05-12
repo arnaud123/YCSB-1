@@ -159,8 +159,11 @@ public class OneMeasurementTimeSeries extends OneMeasurement
 			val[0]=0;
 			returncodes.put(Icode,val);
 		}
-		returncodes.get(Icode)[0]++;
-
+		try{
+			returncodes.get(Icode)[0]++;
+ 		} catch(Exception exc){ 
+			// neglect 
+ 		}
 	}
 
 	@Override

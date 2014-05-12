@@ -753,11 +753,13 @@ public class Client {
 			threads.add(writerThread);
 		}
 		if(!isConsistencyTestRequested(props) || props.getProperty(ADD_SEPARATE_WORKLOAD_PROPERTY) != null){
-			Class<?> workloadclass = classLoader.loadClass(props.getProperty(WORKLOAD_PROPERTY));
-			Workload workload = createWorkload(props, workloadclass);
+			Properties clonedProps = (Properties) props.clone();
+ 			clonedProps.remove("writenode");
+ 			Class<?> workloadclass = classLoader.loadClass(clonedProps.getProperty(WORKLOAD_PROPERTY));
+ 			Workload workload = createWorkload(clonedProps, workloadclass);
 			// Thread id is hier niet belangrijk
-			threads.addAll(createAmountOfThreads(dbname, props, dotransactions, threadcount, 
-											targetperthreadperms, workload, opcount, true, 0));
+			threads.addAll(createAmountOfThreads(dbname, clonedProps, dotransactions, threadcount, 
+								targetperthreadperms, workload, opcount, true, 0));
 		}
 		return threads;
 	}
