@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Create main files and directories
-cd /root/YCSB/imp-modules
+cd /root/YCSB/imp-projects
 mkdir riak_project
 cd riak_project
 cat > .imp <<EOF

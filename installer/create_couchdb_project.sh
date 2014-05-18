@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Create main files and directories
-cd /root/YCSB/imp-modules
+cd /root/YCSB/imp-projects
 mkdir couchdb_project
 cd couchdb_project
 cat > .imp <<EOF

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Create main files and directories
-cd /root/YCSB/imp-modules
+cd /root/YCSB/imp-projects
 mkdir mysqlCluster_project
 cd mysqlCluster_project
 cat > .imp <<EOF
