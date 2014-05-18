@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Create main files and directories
-mkdir /root/YCSB/imp-modules
+cd /root/YCSB/imp-modules
 mkdir riak_project
 cd riak_project
 cat > .imp <<EOF
@@ -19,8 +19,8 @@ done
 # Write main.cf
 cd ..
 cat > main.cf <<EOF
-vm1 = ip::Host(name = "vm1", os = "fedora-18", ip = "172.16.33.2")
-vm2 = ip::Host(name = "vm2", os = "fedora-18", ip = "172.16.33.4")
+vm1 = ip::Host(name = "host1", os = "fedora-18", ip = "172.16.33.2")
+vm2 = ip::Host(name = "host2", os = "fedora-18", ip = "172.16.33.3")
 
 node1 = riak::Riak(host = vm1)
 node2 = riak::Riak(host = vm2)

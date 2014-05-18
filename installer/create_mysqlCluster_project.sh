@@ -19,14 +19,14 @@ done
 # Write main.cf
 cd ..
 cat > main.cf <<EOF
-vm1 = ip::Host(name = "test1", os = "fedora-18", ip = "172.16.33.6")
-vm2 = ip::Host(name = "test2", os = "fedora-18", ip = "172.16.33.7")
+vm1 = ip::Host(name = "host1", os = "fedora-18", ip = "172.16.33.2")
+vm2 = ip::Host(name = "host2", os = "fedora-18", ip = "172.16.33.3")
 
 node1 = mysqlCluster::MasterNode(host = vm1, id = 1)
 node2 = mysqlCluster::SlaveNode(host = vm2, id = 2)
 
-database = mysqlCluster::Database(name = "drupal_test", user = "drupal_test", 
-					password = "Str0ng-P433w0rd")
+database = mysqlCluster::Database(name = "ycsb_database", user = "ycsb_user", 
+					password = "ycsb_password")
 
 mysqlCluster::Cluster(master = node1, slaves =  [node2], databases = database)
 EOF

@@ -19,13 +19,13 @@ done
 # Write main.cf
 cd ..
 cat > main.cf <<EOF
-vm1 = ip::Host(name = "test1", os = "fedora-18", ip = "172.16.33.4")
-vm2 = ip::Host(name = "test2", os = "fedora-18", ip = "172.16.33.5")
+vm1 = ip::Host(name = "host1", os = "fedora-18", ip = "172.16.33.2")
+vm2 = ip::Host(name = "host2", os = "fedora-18", ip = "172.16.33.3")
 
 node1 = couchdb::Couchdb(host = vm1)
 node2 = couchdb::Couchdb(host = vm2)
 
-database1 = couchdb::Database(name = "testdatabase")
+database1 = couchdb::Database(name = "usertable")
 
 couchdb::Cluster(servers = [node1, node2], databases = database1)
 EOF
