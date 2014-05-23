@@ -1,33 +1,30 @@
-Yahoo! Cloud System Benchmark (YCSB)
-====================================
+Extended YCSB tool
+==================
 
-Links
------
-http://wiki.github.com/brianfrankcooper/YCSB/
-http://research.yahoo.com/Web_Information_Management/YCSB
-ycsb-users@yahoogroups.com
+Code to run for each benchmark:
 
-Getting Started
----------------
+* Availability benchmark:
+	python -m Thesis.availability.runCassandraAvai.py <Parameters>
+	python -m Thesis.availability.runRiakAvai.py <Parameters>
+	python -m Thesis.availability.runCouchdbAvai.py <Parameters>
+	python -m Thesis.availability.runMysqlAvai.py <Parameters>
 
-1. Download the latest release of YCSB:
+* Consistency benchmark:
 
-    wget https://github.com/downloads/brianfrankcooper/YCSB/ycsb-0.1.4.tar.gz
-    tar xfvz ycsb-0.1.4
-    cd ycsb-0.1.4
+	python -m Thesis.consistency.runCassandraIncreasingLoad.py <Parameters>
 
-2. Set up a database to benchmark. There is a README file under each binding
-   directory.
+* Determine amount of clients:
 
-3. Run YCSB command. 
+	python -m Thesis.load.loadRoughScan.runCassandraScan.py <Parameters>
+	python -m Thesis.load.loadRoughScan.runRiakScan.py <Parameters>
+	python -m Thesis.load.loadRoughScan.runCouchdbScan.py <Parameters>
+ 	python -m Thesis.load.loadRoughScan.runMysqlScan.py <Parameters>
 
-    bin/ycsb load basic -P workloads/workloada
-    bin/ycsb run basic -P workloads/workloada
+* Determine throughput:
 
-   Running the `ycsb` command without any argument will print the usage. 
-   
-   See https://github.com/brianfrankcooper/YCSB/wiki/Running-a-Workload
-   for a detailed documentation on how to run a workload.
+	python -m Thesis.load.runCassandraLoads.py <Parameters>
+	python -m Thesis.load.runRiakLoads.py <Parameters>
+	python -m Thesis.load.runCouchdbLoads.py <Parameters>
+	python -m Thesis.load.runMysqlScan.py <Parameters>
 
-   See https://github.com/brianfrankcooper/YCSB/wiki/Core-Properties for 
-   the list of available workload properties.
+Running these files without parameters prints the parameters that have to be passed. 
