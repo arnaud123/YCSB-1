@@ -1,0 +1,7 @@
+slices <- c(0.40, 0.25, 0.25, 0.10)
+lbls <- c("READ", "WRITE", "UPDATE", "SCAN")
+lbls <- paste(lbls, slices) # add percents to labels
+lbls <- paste(lbls,"%",sep="") # ad % to labels
+png();
+pie(slices,labels = lbls, col=rainbow(length(lbls)),
+   main="Kansverdeling database operaties") 
