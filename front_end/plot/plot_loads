@@ -1,0 +1,19 @@
+writePlotToFile <- function(x, y, xLabel, yLabel, pathOutputFile){
+	png(filename= pathOutputFile);
+	plot(x, y, xlab=xLabel, ylab=yLabel, type="o");
+}
+
+args <- commandArgs(trailingOnly = TRUE)
+argLength <- length(args)
+if(argLength != 2){
+ 	cat("Usage: script <inputFile> <outputFile>\n")
+	quit()
+}
+
+pathInputFile = args[1];
+pathOutputFile = args[2];
+
+operations <- read.csv(file=pathInputFile,head=TRUE,sep=",")
+
+writePlotToFile(operations$expected_throughput, operations$latency, "throughput (ops/sec)", "Latency (µs)", paste(pathOutputFile, "_latencyplot.png", sep = ""))
+writePlotToFile(operations$expected_throughput, operations$real_throughput, "expected throughput (ops/sec)", "real throughput (ops/sec)", paste(pathOutputFile, "_throughput_plot.png", sep = ""))

@@ -1,0 +1,39 @@
+writePlotToFile <- function(x, y, xLabel, yLabel, pathOutputFile, color){
+	png(filename= pathOutputFile, width = 700, height = 500) # width = 7, height = 7, units = 'in', res = 1200)
+	plot(x, y, xlab=xLabel, ylab=yLabel, type="o", col=color, xpd=TRUE)
+}
+
+addPlot <- function(x, y, color){
+	lines(x,y, type="o", col=color, xpd=TRUE)
+}
+
+inputFiles <- list("/home/arnaud/Ubuntu\ One/private/2de master/Thesis/load_testen/mysql_data/1_machines_30_threads_RESULT",
+				   "/home/arnaud/Ubuntu\ One/private/2de master/Thesis/load_testen/mysql_data/1_machines_50_threads_RESULT",
+				   "/home/arnaud/Ubuntu\ One/private/2de master/Thesis/load_testen/mysql_data/1_machines_70_threads_RESULT")
+titles <- c("30 threads", "50 threads", "70 threads")
+outputFile <- "/home/arnaud/Desktop/result"
+
+
+for (i in 1:length(inputFiles)){
+	operations <- read.csv(file=inputFiles[[i]],head=TRUE,sep=",")
+	if(i==1){
+		resultFile <- paste(outputFile, "_latency", sep="")
+		writePlotToFile(operations$expected_throughput, operations$latency, "throughput (ops/sec)", "Latency (µs)", resultFile, i)
+	}
+	else{
+		addPlot(operations$expected_throughput, operations$latency, i)
+	}
+}
+legend("topleft", inset=.05, title="Legend", titles, col=1:length(inputFiles), lty=1, lwd=2)
+
+for (i in 1:length(inputFiles)){
+	operations <- read.csv(file=inputFiles[[i]],head=TRUE,sep=",")
+	if(i==1){
+		resultFile <- paste(outputFile, "_throughput", sep="")
+		writePlotToFile(operations$expected_throughput, operations$real_throughput, "expected throughput (ops/sec)", "real throughput (ops/sec)", resultFile, i)
+	}
+	else{
+		addPlot(operations$expected_throughput, operations$real_throughput, i)
+	}
+}
+legend("topleft", inset=.05, title="Legend", titles, col=1:length(inputFiles), lty=1, lwd=2)
