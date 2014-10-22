@@ -11,7 +11,7 @@ IPS_IN_CLUSTER = ['172.16.33.14', '172.16.33.15', '172.16.33.16', '172.16.33.17'
 DESTINATION_WORKLOAD_FILE = '/root/YCSB/workloads/workload_load'
 
 def main():
-    if len(sys.argv) < 14:
+    if len(sys.argv) < 13:
         printUsageAndExit()
     runtimeBenchmarkInMinutes = int(sys.argv[1])
     outputFile = sys.argv[2]

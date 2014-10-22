@@ -11,7 +11,7 @@ IPS_IN_CLUSTER = ['172.16.8.16', '172.16.8.17']
 DESTINATION_WORKLOAD_FILE = '/root/YCSB/workloads/workload_load'
 
 def main():
-    if len(sys.argv) < 11:
+    if len(sys.argv) < 13:
         printUsageAndExit()
     runtimeBenchmarkInMinutes = int(sys.argv[1])
     outputFile = sys.argv[2]
@@ -24,10 +24,12 @@ def main():
     maxDelayBeforeDrop = int(sys.argv[9])
     stopOnFirstConsistency = (sys.argv[10].lower() == 'true')
     workloadThreads = int(sys.argv[11])
+    targetThroughputWorkloadThreads = int(sys.argv[12])
     cassandraCluster = CassandraCluster(NORMAL_BINDING, CONSISTENCY_BINDING, IPS_IN_CLUSTER)
     runSingleLoadBenchmark(cassandraCluster, runtimeBenchmarkInMinutes, DESTINATION_WORKLOAD_FILE, outputFile,
                            readConsistencyLevel, writeConsistencyLevel, seedForOperationSelection, requestPeriod,
-                           accuracyInMicros, timeout, maxDelayBeforeDrop, stopOnFirstConsistency, workloadThreads)
+                           accuracyInMicros, timeout, maxDelayBeforeDrop, stopOnFirstConsistency, workloadThreads,
+                           targetThroughputWorkloadThreads)
     
 def printUsageAndExit():
     output = ['Usage: binary']
@@ -42,6 +44,7 @@ def printUsageAndExit():
     output.append('<maxDelayBeforeDrop (micros) (<1 for unlimited)>')
     output.append('<stop first consistency (True/False)>')
     output.append('<#workload threads>')
+    output.append('<target throughput workload threads (ops/sec)>')
     print(' '.join(output))
     exit()
     

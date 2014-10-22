@@ -9,11 +9,13 @@ from consistency.processConsistencyResult import AmountOfSwapsPlot
 
 def runSingleLoadBenchmark(cluster, runtimeBenchmarkInMinutes, pathForWorkloadFile, outputFile,
                            readConsistencyLevel, writeConsistencyLevel, seedForOperationSelection, requestPeriod,
-                           accuracyInMicros, timeout, maxDelayBeforeDrop, stopOnFirstConsistency, workloadThreads):
+                           accuracyInMicros, timeout, maxDelayBeforeDrop, stopOnFirstConsistency, workloadThreads,
+                           targetThroughputWorkloadThreads):
     prepareDatabaseForBenchmark(cluster, pathForWorkloadFile)
     rawDataPaths = runBenchmark(cluster, runtimeBenchmarkInMinutes, pathForWorkloadFile, outputFile,
                                 readConsistencyLevel, writeConsistencyLevel, seedForOperationSelection, requestPeriod,
-                                accuracyInMicros, timeout, maxDelayBeforeDrop, stopOnFirstConsistency, workloadThreads)
+                                accuracyInMicros, timeout, maxDelayBeforeDrop, stopOnFirstConsistency, workloadThreads,
+                                targetThroughputWorkloadThreads)
     # plotResults(rawDataPaths[0], outputFile + '_insert', amountOfReadThreads, timeout)
     # plotResults(rawDataPaths[1], outputFile + '_update', amountOfReadThreads, timeout)
 
