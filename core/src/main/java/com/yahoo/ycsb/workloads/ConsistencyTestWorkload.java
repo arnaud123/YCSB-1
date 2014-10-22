@@ -16,7 +16,6 @@ public abstract class ConsistencyTestWorkload extends CoreWorkload {
 
 	private static final String START_POINT_PROPERTY = "starttime";
 	private static final String DEFAULT_START_POINT_PROPERTY = "10000";
-	private static final String CONSISTENCY_DELAY_PROPERTY = "consistencyDelayMillis";
 	public static final String NEW_REQUEST_PERIOD_PROPERTY = "newrequestperiodMillis";
 	
 	public static final String MAX_DELAY_BEFORE_DROP = "maxDelayConsistencyBeforeDropInMicros";
@@ -33,7 +32,6 @@ public abstract class ConsistencyTestWorkload extends CoreWorkload {
 	protected long nextTimestamp;
 	protected static final String FIELD_WITH_TIMESTAMP = "field1";
 	protected ConsistencyOneMeasurement oneMeasurement;
-	protected long delayBetweenConsistencyChecks;
 	protected boolean firstOperation;
 	
 	private int keyCounter;
@@ -76,19 +74,8 @@ public abstract class ConsistencyTestWorkload extends CoreWorkload {
 						+ START_POINT_PROPERTY
 						+ "\" should be an integer number")*1000;
 		
-		//System.err.println("FIRST NEXT TIMESTAMP: " + this.nextTimestamp);
-		//System.err.println("CURRENT TIME: " + System.nanoTime()/1000);
-		
 		this.keyCounter = 0;
 
-		if (!p.containsKey(CONSISTENCY_DELAY_PROPERTY)) {
-			throw new WorkloadException("Not consistency delay defined: "
-					+ CONSISTENCY_DELAY_PROPERTY);
-		}
-		this.delayBetweenConsistencyChecks = 1000 * this.convertToLong(
-				p.getProperty(CONSISTENCY_DELAY_PROPERTY), "Property \""
-						+ CONSISTENCY_DELAY_PROPERTY
-						+ "\" should be an long number");
 		this.newRequestPeriod = 1000 * this.convertToLong(
 				p.getProperty(NEW_REQUEST_PERIOD_PROPERTY), "Property \""
 						+ NEW_REQUEST_PERIOD_PROPERTY

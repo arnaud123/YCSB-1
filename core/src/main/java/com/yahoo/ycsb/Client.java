@@ -577,11 +577,6 @@ public class Client {
 		if (!checkRequiredProperties(props)) {
 			System.exit(0);
 		}
-	
-		
-		if(isConsistencyTestRequested(props)){
-			checkRequiredConsistencyTestParameters(props);
-		}
 
 		long maxExecutionTime = Integer.parseInt(props.getProperty(
 				MAX_EXECUTION_TIME, "0"));
@@ -738,7 +733,8 @@ public class Client {
 	private static final String UPDATE_PROPORTION_CONSISNTECY_CHECK_PROPERTY = "updateProportionConsistencyCheck";
 	private static final String ADD_SEPARATE_WORKLOAD_PROPERTY = "addSeparateWorkload";
 	private static final String CONSISTENCY_TEST_PROPERTY = "consistencyTest";
-
+	private static final String CONSISTENCY_TEST_ACCURACY_PROPERTY = "accuracyInMillis";
+	
 	private static Vector<Thread> createClientThreads(String dbname,
 			Properties props, boolean dotransactions, int threadcount,
 			double targetperthreadperms, int opcount, ConsistencyMeasurements measurements) throws ClassNotFoundException {
@@ -779,7 +775,7 @@ public class Client {
 		Class<?> writerWorkloadclass = WriterWorkload.class;
 		ConsistencyTestWorkload writerWorkload = (ConsistencyTestWorkload) createWorkload(props, writerWorkloadclass);
 		writerWorkload.setOneMeasurement(measurements.getNewWriteConsistencyOneMeasurement());
-		return createClientThread(dbname, props, dotransactions, 1, getTargetToConsistencyWorkload(props), 
+		return createClientThread(dbname, props, dotransactions, 1, getTargetToConsistencyWorkload(props),
 				writerWorkload, opcount, 0, false);
 	}
 
@@ -804,14 +800,29 @@ public class Client {
 	}
 	
 	private static int getAmountOfReadThreads(Properties props){
-		String readThreads = props.getProperty("readThreads");
-		try{
-			return Integer.parseInt(readThreads);
-		} catch(NumberFormatException exc){
-			throw new RuntimeException("Parameter \"readThreads\" should be an integer value");
-		}
+		double newRequestPeriodImMillis = (double) convertPropertyToLong(props, ConsistencyTestWorkload.NEW_REQUEST_PERIOD_PROPERTY);
+		double accuracyInMillis = (double) convertPropertyToLong(props, CONSISTENCY_TEST_ACCURACY_PROPERTY);
+		double amountOfThreadsNotRounded = newRequestPeriodImMillis/accuracyInMillis;
+		return roundUp(amountOfThreadsNotRounded);
 	}
 
+	private static int  roundUp(double numberToRound){
+		if(numberToRound % 1 != 0)
+			return (int) (numberToRound- (numberToRound % 1) + 1); // Remote part after comma
+		return (int) numberToRound;
+	}
+	
+	private static long convertPropertyToLong(Properties props, String key){
+		String resultAsString = props.getProperty(key);
+		try{
+			return Long.parseLong(resultAsString);
+		} catch(NumberFormatException exc){
+			throw new RuntimeException("Property \"" + key + "\" doesn't have type long");
+		} catch(NullPointerException exc){
+			throw new RuntimeException("Property \"" + key + "\" is missing");
+		}
+	}
+	
 	private static double getTargetToConsistencyWorkload(Properties newProp) {
 		System.err.println("REQUEST_PERIOD: " + newProp.getProperty(ConsistencyTestWorkload.NEW_REQUEST_PERIOD_PROPERTY));
 		double dummy = Long.parseLong(newProp.getProperty(ConsistencyTestWorkload.NEW_REQUEST_PERIOD_PROPERTY));
@@ -824,12 +835,11 @@ public class Client {
 		for(int i=0; i<amount; i++){
 			//TODO: resetten van target
 			ReaderWorkload workload = (ReaderWorkload) createWorkload(prop, workloadclass);
-			// Schedule first read thread one microsecond after write thread
-			long delayToWriterThread = ((workload.getNewRequestPriodInMicros()/amount)*i)+1;
+			long delayToWriterThreadInMicros = convertPropertyToLong(prop, CONSISTENCY_TEST_ACCURACY_PROPERTY)*1000*i;
 			result.add(workload);
 			ConsistencyOneMeasurement measurement = measurements.getNewReadConsistencyOneMeasurement();
 			workload.setOneMeasurement(measurement);
-			workload.setDelayBetweenReadThreads(delayToWriterThread);
+			workload.setDelayBetweenReadThreads(delayToWriterThreadInMicros);
 		}
 		return result;
 	}
@@ -922,8 +932,4 @@ public class Client {
 		return false;
 	}
 	
-	private static void checkRequiredConsistencyTestParameters(Properties prop){
-		if(prop.getProperty("readThreads") == null)
-			throw new RuntimeException("missing property \"readThreads\" for consistency test");
-	}
 }
