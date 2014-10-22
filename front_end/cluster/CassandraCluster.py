@@ -7,7 +7,7 @@ from cluster.Cluster import Cluster
 class CassandraCluster(Cluster):
     
     def __init__(self, normalBinding, consistencyBinding, nodesInCluster):
-        super(Cluster).__init__(self, normalBinding, consistencyBinding, nodesInCluster)
+        super().__init__(normalBinding, consistencyBinding, nodesInCluster)
     
     def deleteDataInCluster(self):
         clearCassandraColumnFamily(self.getNodesInCluster())
