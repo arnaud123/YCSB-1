@@ -19,14 +19,15 @@ def main():
     writeConsistencyLevel = sys.argv[4]
     seedForOperationSelection = sys.argv[5]
     requestPeriod = int(sys.argv[6])
-    timeout = int(sys.argv[7])
-    maxDelayBeforeDrop = int(sys.argv[8])
-    stopOnFirstConsistency = (sys.argv[9].lower() == 'true')
-    workloadThreads = int(sys.argv[10])
+    accuracyInMicros = int(sys.argv[7])
+    timeout = int(sys.argv[8])
+    maxDelayBeforeDrop = int(sys.argv[9])
+    stopOnFirstConsistency = (sys.argv[10].lower() == 'true')
+    workloadThreads = int(sys.argv[11])
     cassandraCluster = CassandraCluster(NORMAL_BINDING, CONSISTENCY_BINDING, IPS_IN_CLUSTER)
     runSingleLoadBenchmark(cassandraCluster, runtimeBenchmarkInMinutes, DESTINATION_WORKLOAD_FILE, outputFile,
                            readConsistencyLevel, writeConsistencyLevel, seedForOperationSelection, requestPeriod,
-                           timeout, maxDelayBeforeDrop, stopOnFirstConsistency, workloadThreads)
+                           accuracyInMicros, timeout, maxDelayBeforeDrop, stopOnFirstConsistency, workloadThreads)
     
 def printUsageAndExit():
     output = ['Usage: binary']
@@ -36,6 +37,7 @@ def printUsageAndExit():
     output.append('<consistency level writes> (ONE, QUORUM, ALL)')
     output.append('<seed for operation selection>')
     output.append('<request period (millis)>')
+    output.append('<accuracy (micros)>')
     output.append('<timeout (micros)>')
     output.append('<maxDelayBeforeDrop (micros) (<1 for unlimited)>')
     output.append('<stop first consistency (True/False)>')

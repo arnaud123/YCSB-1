@@ -733,7 +733,7 @@ public class Client {
 	private static final String UPDATE_PROPORTION_CONSISNTECY_CHECK_PROPERTY = "updateProportionConsistencyCheck";
 	private static final String ADD_SEPARATE_WORKLOAD_PROPERTY = "addSeparateWorkload";
 	private static final String CONSISTENCY_TEST_PROPERTY = "consistencyTest";
-	private static final String CONSISTENCY_TEST_ACCURACY_PROPERTY = "accuracyInMillis";
+	private static final String CONSISTENCY_TEST_ACCURACY_PROPERTY = "accuracyInMicros";
 	
 	private static Vector<Thread> createClientThreads(String dbname,
 			Properties props, boolean dotransactions, int threadcount,
@@ -800,9 +800,9 @@ public class Client {
 	}
 	
 	private static int getAmountOfReadThreads(Properties props){
-		double newRequestPeriodImMillis = (double) convertPropertyToLong(props, ConsistencyTestWorkload.NEW_REQUEST_PERIOD_PROPERTY);
-		double accuracyInMillis = (double) convertPropertyToLong(props, CONSISTENCY_TEST_ACCURACY_PROPERTY);
-		double amountOfThreadsNotRounded = newRequestPeriodImMillis/accuracyInMillis;
+		double newRequestPeriodInMicros = (double) convertPropertyToLong(props, ConsistencyTestWorkload.NEW_REQUEST_PERIOD_PROPERTY)*1000;
+		double accuracyInMicros = (double) convertPropertyToLong(props, CONSISTENCY_TEST_ACCURACY_PROPERTY);
+		double amountOfThreadsNotRounded = newRequestPeriodInMicros/accuracyInMicros;
 		return roundUp(amountOfThreadsNotRounded);
 	}
 
@@ -835,7 +835,7 @@ public class Client {
 		for(int i=0; i<amount; i++){
 			//TODO: resetten van target
 			ReaderWorkload workload = (ReaderWorkload) createWorkload(prop, workloadclass);
-			long delayToWriterThreadInMicros = convertPropertyToLong(prop, CONSISTENCY_TEST_ACCURACY_PROPERTY)*1000*i;
+			long delayToWriterThreadInMicros = convertPropertyToLong(prop, CONSISTENCY_TEST_ACCURACY_PROPERTY)*i;
 			result.add(workload);
 			ConsistencyOneMeasurement measurement = measurements.getNewReadConsistencyOneMeasurement();
 			workload.setOneMeasurement(measurement);

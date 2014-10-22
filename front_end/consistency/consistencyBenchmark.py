@@ -4,23 +4,23 @@ from ycsbClient.runMultipleYcsbClients import executeCommandOnYcsbNodes
 from util.util import checkExitCodeOfProcess
 from consistency.processConsistencyResult.FileParser import FileParser
 from consistency.processConsistencyResult.TimeToConsistencyPlot import TimeToConsistencyPlot
-from consistency.processConsistencyResult.IncreasingLoadConsistencyPlot import IncreasingLoadConsistencyPlot
 from consistency.processConsistencyResult import AmountOfSwapsPlot
 
 
 def runSingleLoadBenchmark(cluster, runtimeBenchmarkInMinutes, pathForWorkloadFile, outputFile,
                            readConsistencyLevel, writeConsistencyLevel, seedForOperationSelection, requestPeriod,
-                           timeout, maxDelayBeforeDrop, stopOnFirstConsistency, workloadThreads):
+                           accuracyInMicros, timeout, maxDelayBeforeDrop, stopOnFirstConsistency, workloadThreads):
     prepareDatabaseForBenchmark(cluster, pathForWorkloadFile)
     rawDataPaths = runBenchmark(cluster, runtimeBenchmarkInMinutes, pathForWorkloadFile, outputFile,
                                 readConsistencyLevel, writeConsistencyLevel, seedForOperationSelection, requestPeriod,
-                                timeout, maxDelayBeforeDrop, stopOnFirstConsistency, workloadThreads)
+                                accuracyInMicros, timeout, maxDelayBeforeDrop, stopOnFirstConsistency, workloadThreads)
     # plotResults(rawDataPaths[0], outputFile + '_insert', amountOfReadThreads, timeout)
     # plotResults(rawDataPaths[1], outputFile + '_update', amountOfReadThreads, timeout)
 
 def runIncreasingLoadBenchmark(cluster, runtimeBenchmarkInMinutes, pathForWorkloadFile, outputFile,
-                               readConsistencyLevel, writeConsistencyLevel, seedForOperationSelection, requestPeriod, timeout,
-                               maxDelayBeforeDrop, stopOnFirstConsistency, workloadThreads, listOfTargetThroughputs):
+                               readConsistencyLevel, writeConsistencyLevel, seedForOperationSelection, requestPeriod,
+                               accuracyInMicros, timeout, maxDelayBeforeDrop, stopOnFirstConsistency, workloadThreads,
+                               listOfTargetThroughputs):
     rawDataPathsInsert = []
     rawDataPathsUpdate = []
     for targetThroughput in listOfTargetThroughputs:
@@ -28,8 +28,8 @@ def runIncreasingLoadBenchmark(cluster, runtimeBenchmarkInMinutes, pathForWorklo
         outputFileCurrentTest = outputFile + '_throughput_' + targetThroughput
         rawDataPaths = runBenchmark(cluster, runtimeBenchmarkInMinutes, pathForWorkloadFile, outputFileCurrentTest,
                                     readConsistencyLevel, writeConsistencyLevel, seedForOperationSelection,
-                                    requestPeriod, timeout, maxDelayBeforeDrop, stopOnFirstConsistency, workloadThreads,
-                                    int(targetThroughput))
+                                    requestPeriod, accuracyInMicros, timeout, maxDelayBeforeDrop,
+                                    stopOnFirstConsistency, workloadThreads, int(targetThroughput))
         rawDataPathsInsert.append(rawDataPaths[0])
         rawDataPathsUpdate.append(rawDataPaths[1])
     # plotter = IncreasingLoadConsistencyPlot(listOfTargetThroughputs, amountOfReadThreads, timeout)
@@ -47,8 +47,9 @@ def loadDatabase(cluster, pathForWorkloadFile):
     checkExitCodeOfProcess(exitcode, 'Loading database failed')
 
 def runBenchmark(cluster, runtimeBenchmarkInMinutes, pathForWorkloadFile, outputFile,
-                 readConsistencyLevel, writeConsistencyLevel, seedForOperationSelection, requestPeriod, timeout,
-                 maxDelayBeforeDrop, stopOnFirstConsistency, workloadThreads, targetThroughput=None):
+                 readConsistencyLevel, writeConsistencyLevel, seedForOperationSelection, requestPeriod,
+                 accuracyInMicros, timeout, maxDelayBeforeDrop, stopOnFirstConsistency, workloadThreads,
+                 targetThroughput=None):
     pathRawUpdateData = outputFile + '_updateRawData'
     pathRawInsertData = outputFile + '_insertRawData'
     extraParameters = []
@@ -64,6 +65,7 @@ def runBenchmark(cluster, runtimeBenchmarkInMinutes, pathForWorkloadFile, output
     extraParameters.extend(['-p', 'timeoutConsistencyBeforeDropInMicros=' + str(timeout)])
     extraParameters.extend(["-p", "useFixedOperationDistributionSeed=True"])
     extraParameters.extend(["-p", "operationDistributionSeed=" + seedForOperationSelection])
+    extraParameters.extend(["-p", "accuracyInMicros=" + str(accuracyInMicros)])
     if(maxDelayBeforeDrop > 0):
         extraParameters.extend(['-p', 'maxDelayConsistencyBeforeDropInMicros=' + str(maxDelayBeforeDrop)])
     extraParameters.extend(['-p', 'stopOnFirstConsistency=' + str(stopOnFirstConsistency)])
