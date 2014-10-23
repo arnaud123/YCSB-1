@@ -5,6 +5,7 @@ from util.util import checkExitCodeOfProcess
 from consistency.processConsistencyResult.FileParser import FileParser
 from consistency.processConsistencyResult.plotCdf import plotCdf
 
+WARM_UP_TIME_IN_SECONDS = 120
 
 def runSingleLoadBenchmark(cluster, runtimeBenchmarkInMinutes, pathForWorkloadFile, outputFile,
                            readConsistencyLevel, writeConsistencyLevel, seedForOperationSelection, requestPeriod,
@@ -88,8 +89,9 @@ def runBenchmark(cluster, runtimeBenchmarkInMinutes, pathForWorkloadFile, output
     localRunCommand = cluster.getRunCommand(pathForWorkloadFile, runtimeBenchmarkInMinutes, str(workloadThreads), extraParameters)
     executeCommandOnYcsbNodes(localRunCommand, localRunCommand, outputFile + '_ycsb_result', [])
     return pathRawInsertData, pathRawUpdateData
-    
+
 def plotResults(inputFile, outputFile):
     fileParser = FileParser()
     dataAboutConsistency = fileParser.parse(inputFile)
+    dataAboutConsistency.removeWarmUpData(WARM_UP_TIME_IN_SECONDS)
     plotCdf(dataAboutConsistency, outputFile)
