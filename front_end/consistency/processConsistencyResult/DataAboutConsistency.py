@@ -1,61 +1,36 @@
-from consistency.processConsistencyResult.TheadMeasurement import ThreadMeasurement;
+from consistency.processConsistencyResult.MeasurementSeries import MeasurementSeries
 
 class DataAboutConsistency(object):
     
-    def __init__(self, amountOfThreads):
-        # This is a dict from timepoints to ThreadMeasurements
-        self.data = {};
-        self.amountOfThreads = amountOfThreads;
-    
-    def add(self, timepoint, threadId, measurement):
-        if(not timepoint in self.data.keys()):
-            threadMeasurement = ThreadMeasurement(measurement);
-            self.data[timepoint] = threadMeasurement;
+    def __init__(self):
+        # Map timepoints to measurements
+        self._data = {}
+
+    def add(self, timepoint, measurement):
+        if not timepoint in self._data.keys():
+            self._data[timepoint] = MeasurementSeries(timepoint, measurement)
         else:
-            threadMeasurement = self.data[timepoint];
-            threadMeasurement.add(threadId, measurement);
-    
-    def getTimePoints(self):
-        return sorted(self.data.keys());
-    
-    def getReadThreadIds(self):
-        result = [];
-        for i in range(0,self.amountOfThreads):
-            result.append('R-' + str(i));
-        return result;
-    
-    def getLatestTimeToConsistencyPerThread(self, timepoint):
-        threadMeasurement = self.data[timepoint];
-        return threadMeasurement.getLatestTimeToConsistencyPerThread();
-    
-    def getEarliestTimeToConsistencyPerThread(self, timepoint):
-        threadMeasurement = self.data[timepoint];
-        return threadMeasurement.getEarliestTimeConsistentValuePerThread();
-    
-    def getAmountOfSwapsPerThread(self, timepoint):
-        threadMeasurements = self.data[timepoint];
-        return threadMeasurements.getAmountOfSwapsPerThread();
-    
-    def getReaderThreadStartTime(self, timepoint, threadId):
-        threadMeasurement = self.data[timepoint];
-        return threadMeasurement.getStartTimeReaderThread(threadId);
-    
-    def getWriterThreadStartTime(self, timepoint):
-        return self.data[timepoint].getStartTimeWriterThread();
-        
-    def getWriterThreadEndTime(self, timepoint):
-        return self.data[timepoint].getEndTimeWriterThread();
-    
-    # Checks the amount of inconsistencies detected by the first
-    # reader thread (R-0).
-    def getAmountOfInconsistentReads(self):
-        amountOfInconsistentMeasures = 0;
-        for timepoint in self.getTimePoints():
-#             earliestTimeToConsistency = self.getEarliestTimeToConsistencyPerThread(timepoint);
-#             latestTimeToConsistency = self.getLatestTimeToConsistencyPerThread(timepoint);
-#             if 'R-0' in earliestTimeToConsistency and \
-#                'R-0' in latestTimeToConsistency and \
-#                (earliestTimeToConsistency['R-0'] < latestTimeToConsistency['R-0']):
-#                 amountOfInconsistentMeasures += 1;
-            amountOfInconsistentMeasures += self.data[timepoint].getAmountOfInconsistentReads('R-0');
-        return amountOfInconsistentMeasures;
+            series = self._data[timepoint]
+            series.add(measurement)
+            self._data[timepoint] = series
+
+    # For every timepoint there is an entry in the list containing
+    # the delay to reach consistency
+    # Timepoint first consistent read after non-consistent read
+    def getListTimeToReachConsistency(self):
+        result = []
+        for timepoint in self._data.keys():
+            series = self._data[timepoint]
+            timeToReachConsistency = series.getTimeToReachConsistency()
+            result.append(timeToReachConsistency)
+        return result
+
+    def removeWarmUpData(self, firstSecondsToRemove):
+        timepointStartOfBenchmark = sorted(self._data.keys())[0]
+        print("Start of benchmark: " + str(timepointStartOfBenchmark))
+        keysToRemove = []
+        for timepoint in self._data.keys():
+            if timepoint < timepointStartOfBenchmark + firstSecondsToRemove*(10**6):
+                keysToRemove.append(timepoint)
+        for key in keysToRemove:
+            self._data.pop(key)
