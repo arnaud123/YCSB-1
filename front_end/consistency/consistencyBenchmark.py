@@ -18,8 +18,8 @@ def runSingleLoadBenchmark(cluster, runtimeBenchmarkInMinutes, pathForWorkloadFi
                                                           seedForOperationSelection, requestPeriod, accuracyInMicros,
                                                           timeout, maxDelayBeforeDrop, stopOnFirstConsistency,
                                                           workloadThreads, targetThroughputWorkloadThreads)
-    plotResults(pathRawInsertData, outputFile + '_insert')
-    plotResults(pathRawUpdateData, outputFile + '_update')
+    plotResults(pathRawInsertData, outputFile + '_insert', timeout, accuracyInMicros)
+    plotResults(pathRawUpdateData, outputFile + '_update', timeout, accuracyInMicros)
 
 def runIncreasingLoadBenchmark(cluster, runtimeBenchmarkInMinutes, pathForWorkloadFile, outputFile,
                                readConsistencyLevel, writeConsistencyLevel, seedForOperationSelection, requestPeriod,
@@ -105,9 +105,9 @@ def getThroughputProducedByNonLoadThreads(requestPeriodInMillis, accuracyInMicro
     readsPerSecond = requestPeriodsPerSecond * readsPerRequestPeriod
     return int(writesPerSecond + readsPerSecond)
 
-def plotResults(inputFile, outputFile):
+def plotResults(inputFile, outputFile, timeoutInMicros, accuracyInMicros):
     fileParser = FileParser()
-    dataAboutConsistency = fileParser.parse(inputFile)
+    dataAboutConsistency = fileParser.parse(inputFile, timeoutInMicros, accuracyInMicros)
     dataAboutConsistency.removeWarmUpData(WARM_UP_TIME_IN_SECONDS)
     dataAboutConsistency.removeInvalidMeasurements()
     plotCdf(dataAboutConsistency, outputFile)

@@ -4,10 +4,10 @@ from consistency.processConsistencyResult.Measurement import Measurement
 
 class FileParser(object):
 
-    def parse(self, pathToFile):
+    def parse(self, pathToFile, timeoutInMicros, accuracyInMicros):
         f = open(pathToFile, 'r')
         headerLine = True
-        dataAboutConsistency = DataAboutConsistency()
+        dataAboutConsistency = DataAboutConsistency(timeoutInMicros, accuracyInMicros)
         for line in f:
             if headerLine:
                 headerLine = False
