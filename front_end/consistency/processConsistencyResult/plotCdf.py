@@ -1,7 +1,7 @@
 import subprocess
 
 
-PATH_TO_PLOT_SCRIPT = '/root/YCSB/Thesis/plot/increasing_load_consistency.R'
+PATH_TO_PLOT_SCRIPT = '/root/YCSB/front_end/consistency/processConsistencyResult/plotCdf.R'
 
 def plotCdf(dataAboutConsistency, outputFile):
     dataToPlot = dataAboutConsistency.getListTimeToReachConsistency()
@@ -12,6 +12,7 @@ def plotCdf(dataAboutConsistency, outputFile):
 
 def writePlotDataToFile(dataToWrite, outputFile):
     f = open(outputFile, 'w')
+    f.write("time_to_reach_consistency\n")
     for item in dataToWrite:
         f.write(str(item) + "\n")
     f.close()
