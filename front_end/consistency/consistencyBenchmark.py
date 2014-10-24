@@ -1,4 +1,5 @@
 import subprocess
+import math
 
 from ycsbClient.runMultipleYcsbClients import executeCommandOnYcsbNodes
 from util.util import checkExitCodeOfProcess
@@ -85,10 +86,23 @@ def runBenchmark(cluster, runtimeBenchmarkInMinutes, pathForWorkloadFile, output
         # Amount of threads has to be a positive number
         extraParameters.extend(['-threads', '1'])
     if(not targetThroughput is None):
-        extraParameters.extend(['-target', str(targetThroughput)])
+        targetThroughputLoadThreads = getTargetThroughputLoadThreads(requestPeriod, accuracyInMicros, targetThroughput)
+        extraParameters.extend(['-target', targetThroughputLoadThreads])
     localRunCommand = cluster.getRunCommand(pathForWorkloadFile, runtimeBenchmarkInMinutes, str(workloadThreads), extraParameters)
     executeCommandOnYcsbNodes(localRunCommand, localRunCommand, outputFile + '_ycsb_result', [])
     return pathRawInsertData, pathRawUpdateData
+
+def getTargetThroughputLoadThreads(requestPeriodInMillis, accuracyInMicros, targetThroughput):
+    throughputNonLoadThreads = getThroughputProducedByNonLoadThreads(requestPeriodInMillis, accuracyInMicros)
+    return math.max(targetThroughput - throughputNonLoadThreads, 0)
+
+def getThroughputProducedByNonLoadThreads(requestPeriodInMillis, accuracyInMicros):
+    requestPeriodsPerSecond = (1000/requestPeriodInMillis)
+    writesPerSecond = requestPeriodsPerSecond
+    requestPeriodInMicros = requestPeriodInMillis*1000
+    readsPerRequestPeriod = math.ceil(requestPeriodInMicros/accuracyInMicros)
+    readsPerSecond = requestPeriodsPerSecond * readsPerRequestPeriod
+    return writesPerSecond + readsPerSecond
 
 def plotResults(inputFile, outputFile):
     fileParser = FileParser()
