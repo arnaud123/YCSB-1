@@ -87,7 +87,7 @@ def runBenchmark(cluster, runtimeBenchmarkInMinutes, pathForWorkloadFile, output
         extraParameters.extend(['-threads', '1'])
     if(not targetThroughput is None):
         targetThroughputLoadThreads = getTargetThroughputLoadThreads(requestPeriod, accuracyInMicros, targetThroughput)
-        extraParameters.extend(['-target', targetThroughputLoadThreads])
+        extraParameters.extend(['-target', str(targetThroughputLoadThreads)])
     localRunCommand = cluster.getRunCommand(pathForWorkloadFile, runtimeBenchmarkInMinutes, str(workloadThreads), extraParameters)
     executeCommandOnYcsbNodes(localRunCommand, localRunCommand, outputFile + '_ycsb_result', [])
     return pathRawInsertData, pathRawUpdateData
