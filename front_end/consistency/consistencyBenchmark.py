@@ -68,7 +68,7 @@ def runBenchmark(cluster, runtimeBenchmarkInMinutes, pathForWorkloadFile, output
     extraParameters.extend(['-p', 'cassandra.readconsistencylevel=' + str(readConsistencyLevel)])
     extraParameters.extend(['-p', 'cassandra.writeconsistencylevel=' + str(writeConsistencyLevel)])
     extraParameters.extend(['-p', 'newrequestperiodMillis=' + str(requestPeriod)])
-    extraParameters.extend(['-p', 'timeoutConsistencyBeforeDropInMicros=' + str(timeout)])
+    extraParameters.extend(['-p', 'timeoutConsistencyBeforeDropInMicros=100000000'])  # neglect field
     extraParameters.extend(["-p", "useFixedOperationDistributionSeed=True"])
     extraParameters.extend(["-p", "operationDistributionSeed=" + seedForOperationSelection])
     extraParameters.extend(["-p", "accuracyInMicros=" + str(accuracyInMicros)])
