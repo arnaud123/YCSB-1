@@ -835,7 +835,7 @@ public class Client {
 		for(int i=0; i<amount; i++){
 			//TODO: resetten van target
 			ReaderWorkload workload = (ReaderWorkload) createWorkload(prop, workloadclass);
-			long delayToWriterThreadInMicros = convertPropertyToLong(prop, CONSISTENCY_TEST_ACCURACY_PROPERTY)*i;
+			long delayToWriterThreadInMicros = convertPropertyToLong(prop, CONSISTENCY_TEST_ACCURACY_PROPERTY)*i + 1;
 			result.add(workload);
 			ConsistencyOneMeasurement measurement = measurements.getNewReadConsistencyOneMeasurement();
 			workload.setOneMeasurement(measurement);

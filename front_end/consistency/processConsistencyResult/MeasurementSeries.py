@@ -8,6 +8,13 @@ class MeasurementSeries:
         self._writeMeasurement = measurement
         self._readMeasurement = []
 
+    def _getStarTimeFirstReadOperation(self):
+        self._readMeasurement.sort(key = operator.attrgetter('_startMeasurement'), reverse=True)
+        return self._readMeasurement[-1].getStartMeasurement()
+
+    def _getStartTimeWriteOperation(self):
+        return self._writeMeasurement.getStartMeasurement()
+
     def add(self, measurement):
         self._readMeasurement.append(measurement)
 
@@ -21,3 +28,10 @@ class MeasurementSeries:
                 else:
                     return self._readMeasurement[i-1].getStartMeasurement()
         return self._readMeasurement[-1].getStartMeasurement()
+
+
+    def isFirstReadBeforeWrite(self):
+        return self._getStartTimeWriteOperation() > self._getStarTimeFirstReadOperation()
+
+    def isTimeBetweenWriteAndFirstReadMoreThan(self, nanos):
+        return self._getStartTimeWriteOperation() + nanos < self._getStarTimeFirstReadOperation()
