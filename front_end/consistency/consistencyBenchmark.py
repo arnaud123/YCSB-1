@@ -94,7 +94,7 @@ def runBenchmark(cluster, runtimeBenchmarkInMinutes, pathForWorkloadFile, output
 
 def getTargetThroughputLoadThreads(requestPeriodInMillis, accuracyInMicros, targetThroughput):
     throughputNonLoadThreads = getThroughputProducedByNonLoadThreads(requestPeriodInMillis, accuracyInMicros)
-    return math.max(targetThroughput - throughputNonLoadThreads, 0)
+    return max(targetThroughput - throughputNonLoadThreads, 0)
 
 def getThroughputProducedByNonLoadThreads(requestPeriodInMillis, accuracyInMicros):
     requestPeriodsPerSecond = (1000/requestPeriodInMillis)
