@@ -15,6 +15,15 @@ class MeasurementSeries:
     def _getStartTimeWriteOperation(self):
         return self._writeMeasurement.getStartMeasurement()
 
+    def _getStartTimeFirstReadAfterWrite(self):
+        startTimeWrite = self._writeMeasurement.getStartMeasurement()
+        self._readMeasurement.sort(key = operator.attrgetter('_startMeasurement'))
+        for measurement in self._readMeasurement:
+            startTimeReadMeasurement = measurement.getStartMeasurement()
+            if startTimeReadMeasurement > startTimeWrite:
+                return startTimeReadMeasurement
+        return None
+
     def add(self, measurement):
         self._readMeasurement.append(measurement)
 
@@ -29,9 +38,9 @@ class MeasurementSeries:
                     return self._readMeasurement[i-1].getStartMeasurement()
         return self._readMeasurement[-1].getStartMeasurement()
 
-
-    def isFirstReadBeforeWrite(self):
-        return self._getStartTimeWriteOperation() > self._getStarTimeFirstReadOperation()
-
-    def isTimeBetweenWriteAndFirstReadMoreThan(self, nanos):
-        return self._getStartTimeWriteOperation() + nanos < self._getStarTimeFirstReadOperation()
+    def isTimeBetweenWriteAndFirstReadAfterWriteLessThan(self, nanos):
+        timeWriteOperation = self._getStartTimeWriteOperation()
+        timeFirstReadAfterWrite = self._getStartTimeFirstReadAfterWrite()
+        if timeFirstReadAfterWrite is None:
+            return False
+        return  timeWriteOperation + nanos > timeFirstReadAfterWrite

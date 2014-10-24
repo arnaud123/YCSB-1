@@ -3,7 +3,7 @@ from consistency.processConsistencyResult.MeasurementSeries import MeasurementSe
 
 class DataAboutConsistency(object):
 
-    MAX_TIME_BETWEEN_WRITE_AND_FIRST_READ_IN_NANOS = 100
+    MAX_TIME_BETWEEN_WRITE_AND_FIRST_READ_AFTER_WRITE_IN_NANOS = 100
 
     def __init__(self):
         # Map timepoints to measurements
@@ -42,10 +42,8 @@ class DataAboutConsistency(object):
         keysToDelete = []
         for timepoint in self._data.keys():
             series = self._data[timepoint]
-            if series.isFirstReadBeforeWrite():
-                keysToDelete.append(timepoint)
-            elif series.isTimeBetweenWriteAndFirstReadMoreThan(
-                    DataAboutConsistency.MAX_TIME_BETWEEN_WRITE_AND_FIRST_READ_IN_NANOS):
+            if not series.isTimeBetweenWriteAndFirstReadAfterWriteLessThan(
+                    DataAboutConsistency.MAX_TIME_BETWEEN_WRITE_AND_FIRST_READ_AFTER_WRITE_IN_NANOS):
                 keysToDelete.append(timepoint)
         for key in keysToDelete:
             self._data.pop(key)
