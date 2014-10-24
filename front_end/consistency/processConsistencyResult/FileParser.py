@@ -21,7 +21,7 @@ class FileParser(object):
         line = line.strip(' \n')
         splittedLine = line.split(',')
         timepoint = int(splittedLine[0])
-        threadId = splittedLine[1]
+        # threadId = splittedLine[1]
         startPoint = int(splittedLine[2])
         delay = int(splittedLine[3])
         if splittedLine[4] == 'null':

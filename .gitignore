@@ -4,3 +4,4 @@
 /.project
 /config
 /front_end/.idea
+*__pycache__*

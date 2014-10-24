@@ -94,4 +94,5 @@ def plotResults(inputFile, outputFile):
     fileParser = FileParser()
     dataAboutConsistency = fileParser.parse(inputFile)
     dataAboutConsistency.removeWarmUpData(WARM_UP_TIME_IN_SECONDS)
+    dataAboutConsistency.removeInvalidMeasurements()
     plotCdf(dataAboutConsistency, outputFile)
