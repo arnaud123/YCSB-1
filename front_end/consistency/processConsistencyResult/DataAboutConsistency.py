@@ -25,7 +25,10 @@ class DataAboutConsistency(object):
         for timepoint in self._data.keys():
             series = self._data[timepoint]
             timeToReachConsistency = series.getTimeToReachConsistency()
-            result.append(timeToReachConsistency)
+            if not timeToReachConsistency is None:
+                result.append(timeToReachConsistency)
+            else:
+                print("Consistency not reached at timepoint: " + str(timepoint))
         return result
 
     def removeWarmUpData(self, firstSecondsToRemove):

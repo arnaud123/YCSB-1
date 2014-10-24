@@ -103,7 +103,7 @@ def getThroughputProducedByNonLoadThreads(requestPeriodInMillis, accuracyInMicro
     requestPeriodInMicros = requestPeriodInMillis*1000
     readsPerRequestPeriod = math.ceil(requestPeriodInMicros/accuracyInMicros)
     readsPerSecond = requestPeriodsPerSecond * readsPerRequestPeriod
-    return writesPerSecond + readsPerSecond
+    return int(writesPerSecond + readsPerSecond)
 
 def plotResults(inputFile, outputFile):
     fileParser = FileParser()

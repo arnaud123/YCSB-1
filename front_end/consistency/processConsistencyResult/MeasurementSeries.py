@@ -33,7 +33,7 @@ class MeasurementSeries:
             currentMeasurement = self._readMeasurement[i]
             if currentMeasurement.getValue() != self._timepoint:
                 if i == 0:
-                    raise Exception("Consistency not reached for measurement at timepoint: " + str(self._timepoint))
+                    return None
                 else:
                     return self._readMeasurement[i-1].getStartMeasurement()
         return self._readMeasurement[-1].getStartMeasurement()
