@@ -25,8 +25,8 @@ class Cluster(object):
         pass;
     
     def writeNormalWorkloadFile(self, remoteYcsbNodes, pathForWorkloadFile):
-        dataToWrite = 'recordcount=10000\n' + \
-        'operationcount=10000000\n' + \
+        dataToWrite = 'recordcount=10000000\n' + \
+        'operationcount=10000000000\n' + \
         """workload=com.yahoo.ycsb.workloads.CoreWorkload
     
 readallfields=true
@@ -45,8 +45,8 @@ hosts=""" + ",".join(self.getNodesInCluster());
         self.writeFileToYcsbNodes(dataToWrite, remoteYcsbNodes, pathForWorkloadFile, pathForWorkloadFile);
 
     def writeConsistencyWorkloadFile(self, remoteYcsbNodes, pathForWorkloadFile):
-        dataToWrite = """recordcount=10000
-operationcount=10000000
+        dataToWrite = """recordcount=10000000
+operationcount=10000000000
 workload=com.yahoo.ycsb.workloads.CoreWorkload
 
 readallfields=true
