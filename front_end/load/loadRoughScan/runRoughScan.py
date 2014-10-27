@@ -19,7 +19,7 @@ def runRoughScan(cluster, pathToWorkloadFile, pathBenchmarkResult, runtimeBenchm
         resultFiles.append(resultFile);
     plotDataFile = pathBenchmarkResult + '_result'
     writeLoadDataToCsv(resultFiles, plotDataFile);
-    subprocess.call(['Rscript', '/root/YCSB/Thesis/plot/plot_load_rough_scan.r', plotDataFile, plotDataFile + '_graph.png']);
+    subprocess.call(['Rscript', '/root/YCSB/front_end/plot/plot_load_rough_scan.r', plotDataFile, plotDataFile + '_graph.png']);
 
 def loadDatabase(cluster, pathForWorkloadFile):
     loadCommand = cluster.getLoadCommand(pathForWorkloadFile);
