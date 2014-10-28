@@ -7,6 +7,7 @@ from load.process_result.AggregatedBenchmarkResult import AggregatedBenchmarkRes
 from util.util import checkExitCodeOfProcess;
 from ycsbClient.runMultipleYcsbClients import executeCommandOnYcsbNodes;
 
+LOAD_PLOT_SCRIPT = '/root/YCSB/front_end/plot/plot_loads'
 
 def runLoadBenchmark(cluster, remoteYcsbNodes, pathToWorkloadFile, runtimeBenchmarkInMinutes, fileToWriteResultTo, amountOfThreads, opsPerSec):
     cluster.writeNormalWorkloadFile(remoteYcsbNodes, pathToWorkloadFile);
@@ -33,7 +34,7 @@ def runLoadBenchmarkAsBatch(cluster, remoteYcsbNodes, pathToWorkloadFile, runtim
             filenameAggResult = getFilenameAggResultFile(dirToWriteResultTo, amountOfMachines, amountOfThreads);
             printMergedAggResultsToFile(aggResults, listOfOpsPerSec, filenameAggResult);
             sleep(30);
-            subprocess.call(['Rscript', '/root/YCSB/Thesis/plot/plot_loads', filenameAggResult, filenameAggResult]);
+            subprocess.call(['Rscript', LOAD_PLOT_SCRIPT, filenameAggResult, filenameAggResult]);
 
 def getFilenameResultFile(directory, amountOfMachines, amountOfThreads, amountOfOperations):
     return directory + '/' + amountOfMachines + '_machines_' + amountOfThreads + '_threads_' + amountOfOperations + '_ops';

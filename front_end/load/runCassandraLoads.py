@@ -29,9 +29,9 @@ def printUsageAndExit():
     print('usage: binary <path workload file> <result dir> <runtime benchmark> <list of #ops> <list of #threads> <list of #machines> [<list remote ycsb nodes>]');
     exit();
 
-cluster = CassandraCluster(NORMAL_BINDING, CONSISTENCY_BINDING, IPS_IN_CLUSTER);
-runLoadBenchmarkAsBatch(cluster, ['172.16.33.10'], '/root/YCSB/workloads/workload_load', 
-                        3, '/root/YCSB/loads/cassandra', 
-                        ['1000000000'], ['1'], ['1']);
+# cluster = CassandraCluster(NORMAL_BINDING, CONSISTENCY_BINDING, IPS_IN_CLUSTER);
+# runLoadBenchmarkAsBatch(cluster, ['172.16.33.10'], '/root/YCSB/workloads/workload_load',
+#                         3, '/root/YCSB/loads/cassandra',
+#                         ['1000000000'], ['1'], ['1']);
 
-# main();
+main();

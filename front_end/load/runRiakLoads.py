@@ -5,7 +5,7 @@ from cluster.RiakCluster import RiakCluster;
 
 NORMAL_BINDING = 'riak';
 CONSISTENCY_BINDING = 'riak_consistency';
-IPS_IN_CLUSTER = ['172.16.33.14', '172.16.33.15', '172.16.33.16', '172.16.33.17', '172.16.33.18'];
+IPS_IN_CLUSTER = ['172.16.8.16', '172.16.8.17', '172.16.8.18', '172.16.8.19', '172.16.8.20'];
 
 def main():
     if len(sys.argv) < 7:
@@ -29,9 +29,9 @@ def printUsageAndExit():
     print('usage: binary <path workload file> <result dir> <runtime benchmark> <list of #ops> <list of #threads> <list of #machines> [<list remote ycsb nodes>]');
     exit();
 
-cluster = RiakCluster(NORMAL_BINDING, CONSISTENCY_BINDING, IPS_IN_CLUSTER);
-runLoadBenchmarkAsBatch(cluster, ['172.16.33.10'], '/root/YCSB/workloads/workload_load', 
-                        3, '/root/YCSB/loads/riak', 
-                        ['1000000000'], ['1'], ['1']);
+# cluster = RiakCluster(NORMAL_BINDING, CONSISTENCY_BINDING, IPS_IN_CLUSTER);
+# runLoadBenchmarkAsBatch(cluster, ['172.16.33.10'], '/root/YCSB/workloads/workload_load',
+#                         3, '/root/YCSB/loads/riak',
+#                         ['1000000000'], ['1'], ['1']);
 
-# main();
+main();

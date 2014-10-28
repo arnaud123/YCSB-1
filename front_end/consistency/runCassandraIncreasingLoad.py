@@ -7,7 +7,7 @@ from consistency.consistencyBenchmark import runIncreasingLoadBenchmark
 
 NORMAL_BINDING = 'cassandra-10'
 CONSISTENCY_BINDING = 'cassandra_consistency'
-IPS_IN_CLUSTER = ['172.16.33.14', '172.16.33.15', '172.16.33.16', '172.16.33.17']
+IPS_IN_CLUSTER = ['172.16.8.16', '172.16.8.17', '172.16.8.18', '172.16.8.19']
 DESTINATION_WORKLOAD_FILE = '/root/YCSB/workloads/workload_load'
 
 def main():

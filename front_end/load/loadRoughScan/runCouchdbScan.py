@@ -5,7 +5,7 @@ from cluster import CouchdbCluster
 
 NORMAL_BINDING = 'couchdb';
 CONSISTENCY_BINDING = 'couchdb_consistency';
-IPS_IN_CLUSTER = ['172.16.33.11', '172.16.33.12', '172.16.33.13'];
+IPS_IN_CLUSTER = ['172.16.8.16', '172.16.8.17', '172.16.8.18'];
 
 def main():
     if len(sys.argv) < 5:

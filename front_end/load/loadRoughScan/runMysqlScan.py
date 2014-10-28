@@ -5,8 +5,8 @@ from load.loadRoughScan.runRoughScan import runRoughScan
 
 NORMAL_BINDING = 'jdbc';
 CONSISTENCY_BINDING = 'jdbc_consistency';
-IPS_IN_CLUSTER = ['172.16.33.11', '172.16.33.12', '172.16.33.13'];
-IP_MASTER_NODE = '172.16.33.11';
+IPS_IN_CLUSTER = ['172.16.8.16', '172.16.8.17', '172.16.8.18'];
+IP_MASTER_NODE = '172.16.8.16';
 PATH_DB_PROPERTIES_FILE = '/root/YCSB/jdbc/db_properties';
 
 def main():

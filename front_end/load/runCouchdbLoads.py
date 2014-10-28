@@ -5,7 +5,7 @@ from cluster import CouchdbCluster
 
 NORMAL_BINDING = 'couchdb';
 CONSISTENCY_BINDING = 'couchdb_consistency';
-IPS_IN_CLUSTER = ['172.16.33.11', '172.16.33.12', '172.16.33.13'];
+IPS_IN_CLUSTER = ['172.16.8.16', '172.16.8.17', '172.16.8.18'];
 
 def main():
     if len(sys.argv) < 7:
@@ -28,9 +28,10 @@ def main():
 def printUsageAndExit():
     print('usage: binary <path workload file> <result dir> <runtime benchmark> <list of #ops> <list of #threads> <list of #machines> [<list remote ycsb nodes>]');
     exit();
-cluster = CouchdbCluster(NORMAL_BINDING, CONSISTENCY_BINDING, IPS_IN_CLUSTER);
-runLoadBenchmarkAsBatch(cluster, ['172.16.33.10'], '/root/YCSB/workloads/workload_load', 
-                        3, '/root/YCSB/loads/couchdb', 
-                        ['1000000000'], ['1'], ['1']);
 
-# main();
+# cluster = CouchdbCluster(NORMAL_BINDING, CONSISTENCY_BINDING, IPS_IN_CLUSTER);
+# runLoadBenchmarkAsBatch(cluster, ['172.16.33.10'], '/root/YCSB/workloads/workload_load',
+#                         3, '/root/YCSB/loads/couchdb',
+#                         ['1000000000'], ['1'], ['1']);
+
+main();
