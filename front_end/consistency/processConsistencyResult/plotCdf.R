@@ -15,4 +15,4 @@ pathOutputFile = args[2];
 
 dataToPlot <- read.csv(file=pathInputFile,head=TRUE,sep=",")
 dataToPlotAsCdf = ecdf(dataToPlot$time_to_reach_consistency)
-writePlotToFile(dataToPlotAsCdf, "Time to reach consistency (ns)", "Probability", pathOutputFile)
+writePlotToFile(dataToPlotAsCdf, "Time to reach consistency (µs)", "Probability", pathOutputFile)
