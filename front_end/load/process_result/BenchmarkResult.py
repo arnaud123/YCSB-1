@@ -1,5 +1,5 @@
 #!/bin/python
-from load.process_result import Measurement
+from load.process_result.Measurement import Measurement
 
 
 class BenchmarkResult:

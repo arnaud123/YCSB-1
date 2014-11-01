@@ -3,7 +3,7 @@
 import sys;
 
 from availability.availabilityBenchmark import runAvailabilityBenchmark
-from cluster import MySqlCluster
+from cluster.MySqlCluster import MySqlCluster
 
 NORMAL_BINDING = 'jdbc';
 CONSISTENCY_BINDING = 'jdbc_consistency';

@@ -1,7 +1,7 @@
 import sys;
 
 from load.loadBenchmark import runLoadBenchmarkAsBatch;
-from cluster import CouchdbCluster
+from cluster.CouchdbCluster import CouchdbCluster
 
 NORMAL_BINDING = 'couchdb';
 CONSISTENCY_BINDING = 'couchdb_consistency';

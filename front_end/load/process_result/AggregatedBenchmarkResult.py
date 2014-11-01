@@ -1,4 +1,4 @@
-from load.process_result import BenchmarkResult
+from load.process_result.BenchmarkResult import BenchmarkResult
 
 
 class AggregatedBenchmarkResult:
