@@ -2,7 +2,7 @@ import subprocess;
 import time;
 
 DELAY_FOR_IS_FINISHED_CHECK = 10;
-REMOTE_RESULT_FILE_PATH = '/root/YCSB/result';
+REMOTE_RESULT_FILE_PATH = 'result';
 
 def executeCommandOnYcsbNodes(localCommand, remoteCommand, pathToWriteResultTo, remoteYcsbClientIps):
     resultFile = open(pathToWriteResultTo, 'w');

@@ -13,7 +13,7 @@ class MySqlCluster(Cluster):
         self.__ipMasterNode = ipMasterNode;
         self.__pathToDbPropertiesFile = pathToDbPropertiesFile;
         self.__pathTmpWorkloadFile = '/tmp/tmpWorkloadFile';
-        self.__pathDbPropertiesFile = '/root/YCSB/jdbc/db_properties';
+        self.__pathDbPropertiesFile = 'jdbc/db_properties';
     
     def __getIpMasterNode(self):
         return self.__ipMasterNode;

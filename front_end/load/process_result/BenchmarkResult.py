@@ -6,7 +6,7 @@ class BenchmarkResult:
     
     def __init__(self, pathToFile):
         self.throughput = -1;
-        self.insertResults = Measurement();
+        self.insertResults = Measurement()
         self.updateResults = Measurement();
         self.readResults = Measurement();
         self.deleteResults = Measurement();

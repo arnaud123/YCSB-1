@@ -1,4 +1,4 @@
-PATH_YCSB_EXECUTABLE = "/root/YCSB/bin/ycsb";
+PATH_YCSB_EXECUTABLE = "bin/ycsb";
 TIMESERIES_GRANULARITY = 2000;
 
 def getLoadCommand(binding, pathToWorkloadFile, extraParameters = []):

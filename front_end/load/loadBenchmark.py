@@ -7,7 +7,7 @@ from load.process_result.AggregatedBenchmarkResult import AggregatedBenchmarkRes
 from util.util import checkExitCodeOfProcess;
 from ycsbClient.runMultipleYcsbClients import executeCommandOnYcsbNodes;
 
-LOAD_PLOT_SCRIPT = '/root/YCSB/front_end/plot/plot_loads'
+LOAD_PLOT_SCRIPT = 'front_end/plot/plot_loads'
 
 def runLoadBenchmark(cluster, remoteYcsbNodes, pathToWorkloadFile, runtimeBenchmarkInMinutes, fileToWriteResultTo, amountOfThreads, opsPerSec):
     cluster.writeNormalWorkloadFile(remoteYcsbNodes, pathToWorkloadFile);

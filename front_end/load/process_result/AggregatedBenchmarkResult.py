@@ -12,11 +12,11 @@ class AggregatedBenchmarkResult:
     def WriteToFile(self, targetFile):
         f = open(targetFile, 'w');
         f.write('[throughput], ' + str(self.getThroughput()) + '\n');
-        f.write('[READ], ' + str(self.getAggregatedLatency('hasAverageReadLatency', 'getAverageReadLatency')) + '\n');
-        f.write('[INSERT], ' + str(self.getAggregatedLatency('hasAverageInsertLatency', 'getAverageInsertLatency')) + '\n');
-        f.write('[UPDATE], ' + str(self.getAggregatedLatency('hasAverageUpdateLatency', 'getAverageUpdateLatency')) + '\n');
-        f.write('[SCAN], ' + str(self.getAggregatedLatency('hasAverageScanLatency', 'getAverageScanLatency')) + '\n');
-        f.write('[DELETE], ' + str(self.getAggregatedLatency('hasAverageDeleteLatency', 'getAverageDeleteLatency')) + '\n');
+        f.write('[READ], ' + str(self.getAggregatedLatency('hasAverageReadLatency')) + '\n');
+        f.write('[INSERT], ' + str(self.getAggregatedLatency('hasAverageInsertLatency')) + '\n');
+        f.write('[UPDATE], ' + str(self.getAggregatedLatency('hasAverageUpdateLatency')) + '\n');
+        f.write('[SCAN], ' + str(self.getAggregatedLatency('hasAverageScanLatency')) + '\n');
+        f.write('[DELETE], ' + str(self.getAggregatedLatency('hasAverageDeleteLatency')) + '\n');
         f.close();
         
     def getThroughput(self):

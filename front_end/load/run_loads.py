@@ -9,7 +9,7 @@ from delete_data.deleteAllRiakData import deleteAllDataInRiak;
 
 
 ipAddressMySqlMasterNode = "172.16.33.15";
-pathForWorkloadFile = "/root/YCSB/workloads/workload_load";
+pathForWorkloadFile = "workloads/workload_load";
 cassandramysqlIps = ['172.16.33.15', '172.16.33.16'];
 riakcouchdbIps = ['172.16.33.13', '172.16.33.14'];
 otherYcsbNodes = ['172.16.33.10', '172.16.33.11', '172.16.33.12'];

@@ -1,7 +1,7 @@
 import subprocess
 
 
-PATH_TO_PLOT_SCRIPT = '/root/YCSB/front_end/consistency/processConsistencyResult/plotCdf.R'
+PATH_TO_PLOT_SCRIPT = 'front_end/consistency/processConsistencyResult/plotCdf.R'
 
 def plotCdf(dataAboutConsistency, outputFile):
     dataToPlot = dataAboutConsistency.getListTimeToReachConsistency()
