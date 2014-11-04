@@ -1,6 +1,6 @@
 import subprocess
 
-from delete_data.deleteAllCassandraData import clearCassandraColumnFamily
+from delete_data.deleteAllCassandraData import clearCassandraKeyspace
 from util.util import executeCommandOverSsh
 from cluster.Cluster import Cluster
 
@@ -10,7 +10,7 @@ class CassandraCluster(Cluster):
         super().__init__(normalBinding, consistencyBinding, nodesInCluster)
     
     def deleteDataInCluster(self):
-        clearCassandraColumnFamily(self.getNodesInCluster())
+        clearCassandraKeyspace(self.getNodesInCluster())
 
     def doRemoveNode(self, ipNodeToRemove):
         return subprocess.Popen(["ssh", "root@" + ipNodeToRemove, "nodetool decommission"])
