@@ -3,8 +3,6 @@ from time import sleep;
 from util.util import executeCommandOverSsh
 
 
-CASSANDRA_CLI_CMD = 'cassandra-cli -f ';
-
 def clearCassandraKeyspace(ipsInCluster):
     ip = ipsInCluster[0]
     dropKeyspace(ip)
@@ -15,7 +13,8 @@ def dropKeyspace(accessNode):
     pathDropKeyspaceFile = "/tmp/drop_keyspace"
     executeCommandOverSsh(accessNode, 'echo "drop keyspace usertable" > ' + pathDropKeyspaceFile);
     sleep(3);
-    executeCommandOverSsh(accessNode, CASSANDRA_CLI_CMD + ' ' + pathDropKeyspaceFile);
+    cassandraCliCommand = getCassandraCliCommand(accessNode, pathDropKeyspaceFile)
+    executeCommandOverSsh(accessNode, cassandraCliCommand);
 
 def createKeyspace(accessNode):
     pathCreateKeyspaceFile = "/tmp/create_keyspace"
@@ -26,4 +25,8 @@ use usertable;
 create column family data;\""""
     executeCommandOverSsh(accessNode, 'echo ' + cassandraCliCommands + ' > ' + pathCreateKeyspaceFile);
     sleep(3);
-    executeCommandOverSsh(accessNode, CASSANDRA_CLI_CMD + ' ' + pathCreateKeyspaceFile);
+    cassandraCliCommand = getCassandraCliCommand(accessNode, pathCreateKeyspaceFile)
+    executeCommandOverSsh(accessNode, cassandraCliCommand);
+
+def getCassandraCliCommand(ip, pathCommandFile):
+    return "cassandra-cli -h " + ip + " -f " + pathCommandFile
