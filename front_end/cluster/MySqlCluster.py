@@ -8,8 +8,7 @@ from cluster import Cluster
 class MySqlCluster(Cluster):
     
     def __init__(self, normalBinding, consistencyBinding, nodesInCluster, ipMasterNode, pathToDbPropertiesFile):
-        super(Cluster, self).__init__(self, normalBinding, consistencyBinding, nodesInCluster)
-# Cluster.__init__(self, normalBinding, consistencyBinding, nodesInCluster);
+        super().__init__(normalBinding, consistencyBinding, nodesInCluster)
         self.__ipMasterNode = ipMasterNode;
         self.__pathToDbPropertiesFile = pathToDbPropertiesFile;
         self.__pathTmpWorkloadFile = '/tmp/tmpWorkloadFile';

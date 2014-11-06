@@ -8,8 +8,7 @@ from cluster import Cluster
 class RiakCluster(Cluster):
     
     def __init__(self, normalBinding, consistencyBinding, nodesInCluster):
-        super(Cluster, self).__init__(self, normalBinding, consistencyBinding, nodesInCluster)
-# Cluster.__init__(self, normalBinding, consistencyBinding, nodesInCluster);
+        super().__init__(normalBinding, consistencyBinding, nodesInCluster)
     
     def deleteDataInCluster(self):
         deleteAllDataInRiak(self.getNodesInCluster());

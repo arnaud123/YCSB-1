@@ -8,8 +8,7 @@ from cluster import Cluster
 class CouchdbCluster(Cluster):
     
     def __init__(self, normalBinding, consistencyBinding, nodesInCluster):
-        super(Cluster, self).__init__(self, normalBinding, consistencyBinding, nodesInCluster)
-# Cluster.__init__(self, normalBinding, consistencyBinding, nodesInCluster);
+        super().__init__(normalBinding, consistencyBinding, nodesInCluster);
         self.__databaseName = 'usertable';
         self.__pathTmpWorkloadFile = '/tmp/tmpWorkloadFile';
     
