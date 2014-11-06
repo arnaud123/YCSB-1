@@ -2,7 +2,7 @@ import subprocess;
 
 from delete_data.deleteAllRiakData import deleteAllDataInRiak;
 from util.util import executeCommandOverSsh;
-from cluster import Cluster
+from cluster.Cluster import Cluster
 
 
 class RiakCluster(Cluster):

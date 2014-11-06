@@ -2,7 +2,7 @@ import subprocess;
 
 from util.util import executeCommandOverSsh;
 from delete_data.deleteAllCouchdbData import deleteAllDataInCouchdb;
-from cluster import Cluster
+from cluster.Cluster import Cluster
 
 
 class CouchdbCluster(Cluster):

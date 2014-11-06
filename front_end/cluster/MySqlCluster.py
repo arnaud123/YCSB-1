@@ -2,7 +2,7 @@ import subprocess;
 
 from util.util import executeCommandOverSsh
 from util.util import checkExitCodeOfProcess;
-from cluster import Cluster
+from cluster.Cluster import Cluster
 
 
 class MySqlCluster(Cluster):
