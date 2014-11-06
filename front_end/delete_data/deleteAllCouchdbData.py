@@ -39,7 +39,7 @@ def executeDeletionInBatch(commands):
 def retrieveDocumentsAsJson(ipsInCluster, database):
     searchProcess = subprocess.Popen(['curl', '-XGET', 'http://' + ipsInCluster[0] + ':5984/' + database + '/_all_docs'], stdout=subprocess.PIPE);
     (stdout, _) = searchProcess.communicate();
-    return json.loads(stdout);
+    return json.loads(stdout.decode());
 
 # Create http delete request for every document.
 def getHttpDeleteRequests(jsonObj, ipsInCluster, database):
