@@ -8,6 +8,8 @@ def clearCassandraKeyspace(ipsInCluster):
     dropKeyspace(ip)
     sleep(10)
     createKeyspace(ip)
+    executeCompaction(ipsInCluster)
+    sleep(20)
 
 def dropKeyspace(accessNode):
     pathDropKeyspaceFile = "/tmp/drop_keyspace"
@@ -30,3 +32,8 @@ create column family data;\""""
 
 def getCassandraCliCommand(ip, pathCommandFile):
     return "cassandra-cli -h " + ip + " -f " + pathCommandFile
+
+def executeCompaction(ipsInCluster):
+    for ip in ipsInCluster:
+        command = "nodetool compact"
+        executeCommandOverSsh(ip, command)
