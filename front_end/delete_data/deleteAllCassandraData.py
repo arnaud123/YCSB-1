@@ -7,9 +7,10 @@ def clearCassandraKeyspace(ipsInCluster):
     ip = ipsInCluster[0]
     dropKeyspace(ip)
     sleep(10)
-    createKeyspace(ip)
     executeCompaction(ipsInCluster)
-    sleep(20)
+    sleep(10)
+    createKeyspace(ip)
+    sleep(10)
 
 def dropKeyspace(accessNode):
     pathDropKeyspaceFile = "/tmp/drop_keyspace"
