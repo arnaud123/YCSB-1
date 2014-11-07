@@ -13,7 +13,7 @@ def clearCassandraKeyspace(ipsInCluster):
 
 def dropKeyspace(accessNode):
     pathDropKeyspaceFile = "/tmp/drop_keyspace"
-    executeCommandOverSsh(accessNode, 'echo "drop keyspace usertable" > ' + pathDropKeyspaceFile);
+    executeCommandOverSsh(accessNode, 'echo "DROP KEYSPACE usertable;" > ' + pathDropKeyspaceFile);
     sleep(3);
     cassandraCliCommand = getCassandraCliCommand(accessNode, pathDropKeyspaceFile)
     executeCommandOverSsh(accessNode, cassandraCliCommand);
