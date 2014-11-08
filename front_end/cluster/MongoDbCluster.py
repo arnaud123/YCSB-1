@@ -4,7 +4,7 @@ from delete_data.deleteAllMongoDbData import deleteAllDataInMongoDb
 
 class MongoDbCluster(Cluster):
 
-    _MAX_AMOUNT_OF_CONNECTION = 100
+    _MAX_AMOUNT_OF_CONNECTION = 200
 
     def __init__(self, normalBinding, consistencyBinding, nodesInCluster, accessNodes):
         super().__init__(normalBinding, consistencyBinding, nodesInCluster)
@@ -30,13 +30,11 @@ class MongoDbCluster(Cluster):
         return paramList
 
     def _addUrlPropertyToDbBinding(self, paramList):
-        paramList.append('-P')
-        paramList.append("mongodb://" + self._accessNodes[0] + ":27017")
+        paramList.extend(['-p', "mongodb.url=mongodb://" + self._accessNodes[0] + ":27017"])
         return paramList
 
     def _addAmountOfConnectionsToDbBinding(self, paramList):
-        paramList.append('-P')
-        paramList.append(str(MongoDbCluster._MAX_AMOUNT_OF_CONNECTION))
+        paramList.extend(['-p', "mongodb.maxconnections=" + str(MongoDbCluster._MAX_AMOUNT_OF_CONNECTION)])
         return paramList
 
     def deleteDataInCluster(self):
