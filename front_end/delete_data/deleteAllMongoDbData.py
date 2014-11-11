@@ -1,15 +1,25 @@
+import subprocess
+import time
+
+
 from util.util import executeCommandOverSsh
 
 def deleteAllDataInMongoDb(ipAccessNode, ipDataNodes, databaseName, collectionName):
     deleteAllDataInCollection(ipAccessNode, databaseName, collectionName)
+    time.sleep(10)
     freeUpUnusedSpace(ipDataNodes, databaseName)
-    # TODO: add sleeps
+    time.sleep(10)
 
 def deleteAllDataInCollection(ipAccessNode, databaseName, collectionName):
-    command = "echo 'use " + databaseName + ";db." + collectionName + ".remove()' | mongo"  # execute on mongos
-    executeCommandOverSsh(ipAccessNode, command)
+    command = "echo -e \"use " + databaseName + " ;\n db.collection.remove({})\" | mongo "  # execute on mongod
+    executeShellCommand(ipAccessNode, command)
 
 def freeUpUnusedSpace(ipDataNodes, databaseName):
     for ip in ipDataNodes:
-        command = "echo 'use " + databaseName + ";db.repairDatabase()' | mongo --port 27018"  # execute on mongod
-        executeCommandOverSsh(ip, command)
+        command = "echo -e \"use " + databaseName + " ;\n db.repairDatabase()\" | mongo --port 27018"  # execute on mongod
+        executeShellCommand(ip, command)
+
+def executeShellCommand(ip, shellCommand):
+    exitCode = subprocess.call("ssh root@" + ip + " '" + shellCommand + "'", shell=True)
+    if exitCode != 0:
+        raise Exception("Executing shell command failed: " + shellCommand)
