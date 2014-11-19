@@ -1,9 +1,6 @@
 import subprocess
 import time
 
-
-from util.util import executeCommandOverSsh
-
 def deleteAllDataInMongoDb(ipAccessNode, ipDataNodes, databaseName, collectionName):
     deleteAllDataInCollection(ipAccessNode, databaseName, collectionName)
     time.sleep(10)
@@ -11,7 +8,7 @@ def deleteAllDataInMongoDb(ipAccessNode, ipDataNodes, databaseName, collectionNa
     time.sleep(10)
 
 def deleteAllDataInCollection(ipAccessNode, databaseName, collectionName):
-    command = "echo -e \"use " + databaseName + " ;\n db.collection.remove({})\" | mongo "  # execute on mongod
+    command = "echo -e \"use " + databaseName + " ;\n db." + collectionName + ".remove({})\" | mongo "  # execute on mongod
     executeShellCommand(ipAccessNode, command)
 
 def freeUpUnusedSpace(ipDataNodes, databaseName):

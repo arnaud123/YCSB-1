@@ -7,6 +7,7 @@ class MongoDbCluster(Cluster):
     _MAX_AMOUNT_OF_CONNECTION = 200
 
     def __init__(self, normalBinding, consistencyBinding, nodesInCluster, accessNodes):
+        # TODO: Add write concern
         super().__init__(normalBinding, consistencyBinding, nodesInCluster)
         self.__databaseName = "ycsb"
         self.__collectionName = "usertable"
@@ -19,10 +20,6 @@ class MongoDbCluster(Cluster):
     def getRunCommand(self, pathToWorkloadFile, runtimeBenchmarkInMinutes, amountOfThreads, extraParameters = []):
         extraParameters = self._addMongoDbSpecificProperties(extraParameters);
         return super(MongoDbCluster, self).getRunCommand(pathToWorkloadFile, runtimeBenchmarkInMinutes, amountOfThreads, extraParameters);
-
-    def getConsistencyRunCommand(self, pathToWorkloadFile, pathConsistencyResult, runtimeBenchmarkInSeconds, amountOfThreads, extraParameters = []):
-        extraParameters = self._addMongoDbSpecificProperties(extraParameters);
-        return super(MongoDbCluster, self).getConsistencyRunCommand(pathToWorkloadFile, pathConsistencyResult, runtimeBenchmarkInSeconds, amountOfThreads, extraParameters);\
 
     def _addMongoDbSpecificProperties(self, paramList):
         paramList = self._addUrlPropertyToDbBinding(paramList)

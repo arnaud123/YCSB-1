@@ -29,10 +29,6 @@ class MySqlCluster(Cluster):
         extraParameters = self.__addDbPropertiesAttribute(extraParameters);
         return super(MySqlCluster, self).getRunCommand(pathToWorkloadFile, runtimeBenchmarkInMinutes, amountOfThreads, extraParameters);
 
-    def getConsistencyRunCommand(self, pathToWorkloadFile, pathConsistencyResult, runtimeBenchmarkInSeconds, amountOfThreads, extraParameters = []):
-        extraParameters = self.__addDbPropertiesAttribute(extraParameters);
-        return super(MySqlCluster, self).getConsistencyRunCommand(pathToWorkloadFile, pathConsistencyResult, runtimeBenchmarkInSeconds, amountOfThreads, extraParameters);
-
     def __addDbPropertiesAttribute(self, paramList):
         paramList.append('-P');
         paramList.append(self.__pathToDbPropertiesFile);

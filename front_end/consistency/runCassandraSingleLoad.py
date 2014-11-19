@@ -25,11 +25,11 @@ def main():
     stopOnFirstConsistency = (sys.argv[10].lower() == 'true')
     workloadThreads = int(sys.argv[11])
     targetThroughputWorkloadThreads = int(sys.argv[12])
-    cassandraCluster = CassandraCluster(NORMAL_BINDING, CONSISTENCY_BINDING, IPS_IN_CLUSTER)
+    cassandraCluster = CassandraCluster(NORMAL_BINDING, CONSISTENCY_BINDING, IPS_IN_CLUSTER, readConsistencyLevel,
+                                        writeConsistencyLevel)
     runSingleLoadBenchmark(cassandraCluster, runtimeBenchmarkInMinutes, DESTINATION_WORKLOAD_FILE, outputFile,
-                           readConsistencyLevel, writeConsistencyLevel, seedForOperationSelection, requestPeriod,
-                           accuracyInMicros, timeout, maxDelayBeforeDrop, stopOnFirstConsistency, workloadThreads,
-                           targetThroughputWorkloadThreads)
+                           seedForOperationSelection, requestPeriod, accuracyInMicros, timeout, maxDelayBeforeDrop,
+                           stopOnFirstConsistency, workloadThreads, targetThroughputWorkloadThreads)
     
 def printUsageAndExit():
     output = ['Usage: binary']
