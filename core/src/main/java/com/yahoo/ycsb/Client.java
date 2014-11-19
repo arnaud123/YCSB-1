@@ -744,9 +744,9 @@ public class Client {
 			Properties propsConsistencyCheck = addConsistencyCheckOperationDistribution(props);
 			Thread writerThread = createWriterThreads(dbname, propsConsistencyCheck,
 					dotransactions, opcount, measurements);
-			threads = createReaderThread(dbname, propsConsistencyCheck, dotransactions,
-					opcount, measurements);
 			threads.add(writerThread);
+			Thread readerThread = createReaderThread(dbname, propsConsistencyCheck, dotransactions, opcount, measurements);
+			threads.add(readerThread);
 		}
 		if(!isConsistencyTestRequested(props) || props.getProperty(ADD_SEPARATE_WORKLOAD_PROPERTY) != null){
 			Properties clonedProps = (Properties) props.clone();
@@ -760,13 +760,20 @@ public class Client {
 		return threads;
 	}
 
-	private static Vector<Thread> createReaderThread(String dbname,
+	private static Thread createReaderThread(String dbname,
 			Properties props, boolean dotransactions, int opcount,
 			ConsistencyMeasurements measurements) {
-		int amountOfReadThreads = getAmountOfReadThreads(props);
-		List<Workload> readerWorkloads = getReaderWorkloads(props, amountOfReadThreads, measurements);
-		return createAmountOfThreads(dbname, props, dotransactions, amountOfReadThreads, getTargetToConsistencyWorkload(props), 
-														readerWorkloads, opcount, false, 1);
+		Object delayToWriterThread = props.get("delayToWriterThread");
+		if(delayToWriterThread == null)
+			throw new IllegalArgumentException("Parameter \"delayToWriterThread\" is missing");
+		Workload workload = getReaderWorkload(props, measurements, (long)delayToWriterThread);
+		return createClientThread(dbname, props, dotransactions, 1, getTargetToConsistencyWorkload(props), workload, opcount, 1, false);
+		
+		
+//		int amountOfReadThreads = getAmountOfReadThreads(props);
+//		List<Workload> readerWorkloads = getReaderWorkloads(props, amountOfReadThreads, measurements);
+//		return createAmountOfThreads(dbname, props, dotransactions, amountOfReadThreads, getTargetToConsistencyWorkload(props), 
+//														readerWorkloads, opcount, false, 1);
 	}
 
 	private static Thread createWriterThreads(String dbname, Properties props,
@@ -829,19 +836,26 @@ public class Client {
 		return (1/dummy)*1.1;
 	}
 	
-	private static List<Workload> getReaderWorkloads(Properties prop, int amount, ConsistencyMeasurements measurements){
-		List<Workload> result = new ArrayList<Workload>();
+	private static Workload getReaderWorkload(Properties prop, ConsistencyMeasurements measurements, long delayToWriterThreadInMicros){
 		Class<?> workloadclass = ReaderWorkload.class;
-		for(int i=0; i<amount; i++){
-			//TODO: resetten van target
-			ReaderWorkload workload = (ReaderWorkload) createWorkload(prop, workloadclass);
-			long delayToWriterThreadInMicros = convertPropertyToLong(prop, CONSISTENCY_TEST_ACCURACY_PROPERTY)*i + 1;
-			result.add(workload);
-			ConsistencyOneMeasurement measurement = measurements.getNewReadConsistencyOneMeasurement();
-			workload.setOneMeasurement(measurement);
-			workload.setDelayBetweenReadThreads(delayToWriterThreadInMicros);
-		}
-		return result;
+		ReaderWorkload workload = (ReaderWorkload) createWorkload(prop, workloadclass);
+		ConsistencyOneMeasurement measurement = measurements.getNewReadConsistencyOneMeasurement();
+		workload.setOneMeasurement(measurement);
+		workload.setDelayBetweenReadThreads(delayToWriterThreadInMicros);
+		return workload;
+		
+//		List<Workload> result = new ArrayList<Workload>();
+//		Class<?> workloadclass = ReaderWorkload.class;
+//		for(int i=0; i<amount; i++){
+//			//TODO: resetten van target
+//			ReaderWorkload workload = (ReaderWorkload) createWorkload(prop, workloadclass);
+//			long delayToWriterThreadInMicros = convertPropertyToLong(prop, CONSISTENCY_TEST_ACCURACY_PROPERTY)*i + 1;
+//			result.add(workload);
+//			ConsistencyOneMeasurement measurement = measurements.getNewReadConsistencyOneMeasurement();
+//			workload.setOneMeasurement(measurement);
+//			workload.setDelayBetweenReadThreads(delayToWriterThreadInMicros);
+//		}
+//		return result;
 	}
 	
 	private static Workload createWorkload(Properties props, Class<?> workloadclass) {
