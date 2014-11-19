@@ -766,7 +766,8 @@ public class Client {
 		Object delayToWriterThread = props.get("delayToWriterThread");
 		if(delayToWriterThread == null)
 			throw new IllegalArgumentException("Parameter \"delayToWriterThread\" is missing");
-		Workload workload = getReaderWorkload(props, measurements, (long)delayToWriterThread);
+		
+		Workload workload = getReaderWorkload(props, measurements, (Long)delayToWriterThread);
 		return createClientThread(dbname, props, dotransactions, 1, getTargetToConsistencyWorkload(props), workload, opcount, 1, false);
 		
 		
