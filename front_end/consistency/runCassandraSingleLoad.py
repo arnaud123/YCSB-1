@@ -6,7 +6,7 @@ from consistency.consistencyBenchmark import runSingleLoadBenchmark
 from cluster.CassandraCluster import CassandraCluster
 
 NORMAL_BINDING = 'cassandra-10'
-CONSISTENCY_BINDING = 'cassandra_consistency'
+CONSISTENCY_BINDING = 'cassandra-10'
 IPS_IN_CLUSTER = ['172.16.8.16', '172.16.8.17', '172.16.8.18', '172.16.8.19']
 DESTINATION_WORKLOAD_FILE = 'workloads/workload_load'
 

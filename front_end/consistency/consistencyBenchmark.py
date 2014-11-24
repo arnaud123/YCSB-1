@@ -59,7 +59,7 @@ def runBenchmark(cluster, runtimeBenchmarkInMinutes, pathToWorkloadFile, outputF
         command = cluster.getConsistencyRunCommand(pathToWorkloadFile, pathConsistencyResult, runtimeBenchmarkInMinutes,
                                      workloadThreads, outputFile, requestPeriod, seedForOperationSelection,
                                      accuracyInMicros, maxDelayBeforeDrop, stopOnFirstConsistency, cluster,
-                                     targetThroughput, pathRawInsertData, pathRawUpdateData, extraParameters)
+                                     targetThroughput, pathRawInsertData, pathRawUpdateData, i, extraParameters)
         executeCommandOnYcsbNodes(command, command, outputFile + '_ycsb_result' + str(i) + 'micros', [])
         resultFileMap[i] = pathRawInsertData, pathRawUpdateData
     return resultFileMap

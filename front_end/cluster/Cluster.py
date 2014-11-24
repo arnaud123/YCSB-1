@@ -92,7 +92,7 @@ hosts=""" + ",".join(self.getNodesInCluster());
     def getConsistencyRunCommand(self, pathToWorkloadFile, pathConsistencyResult, runtimeBenchmarkInMinutes,
                                  workloadThreads, outputFile, requestPeriod, seedForOperationSelection,
                                  accuracyInMicros, maxDelayBeforeDrop, stopOnFirstConsistency, cluster,
-                                 targetThroughput, pathRawInsertData, pathRawUpdateData, extraParameters = []):
+                                 targetThroughput, pathRawInsertData, pathRawUpdateData, delayToWriterThreadInMicros, extraParameters = []):
         extraParameters = self.addDbSpecificConsistencyBenchmarkParams(extraParameters)
         extraParameters.extend(['-p', 'insertMatrixDelayExportFile=' + outputFile + '_insertDelay'])
         extraParameters.extend(['-p', 'updateMatrixDelayExportFile=' + outputFile + '_updateDelay'])
@@ -105,6 +105,7 @@ hosts=""" + ",".join(self.getNodesInCluster());
         extraParameters.extend(["-p", "useFixedOperationDistributionSeed=True"])
         extraParameters.extend(["-p", "operationDistributionSeed=" + seedForOperationSelection])
         extraParameters.extend(["-p", "accuracyInMicros=" + str(accuracyInMicros)])
+        extraParameters.extend(["-p", "delayToWriterThread=" + str(delayToWriterThreadInMicros)])
         if(maxDelayBeforeDrop > 0):
             extraParameters.extend(['-p', 'maxDelayConsistencyBeforeDropInMicros=' + str(maxDelayBeforeDrop)])
         extraParameters.extend(['-p', 'stopOnFirstConsistency=' + str(stopOnFirstConsistency)])

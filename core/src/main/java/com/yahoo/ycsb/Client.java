@@ -763,11 +763,11 @@ public class Client {
 	private static Thread createReaderThread(String dbname,
 			Properties props, boolean dotransactions, int opcount,
 			ConsistencyMeasurements measurements) {
-		Object delayToWriterThread = props.get("delayToWriterThread");
-		if(delayToWriterThread == null)
+		String delayToWriterThreadAsString = (String)props.get("delayToWriterThread");
+		if(delayToWriterThreadAsString == null)
 			throw new IllegalArgumentException("Parameter \"delayToWriterThread\" is missing");
 		
-		Workload workload = getReaderWorkload(props, measurements, (Long)delayToWriterThread);
+		Workload workload = getReaderWorkload(props, measurements, Long.parseLong(delayToWriterThreadAsString));
 		return createClientThread(dbname, props, dotransactions, 1, getTargetToConsistencyWorkload(props), workload, opcount, 1, false);
 		
 		
