@@ -17,7 +17,10 @@ def dropKeyspace(accessNode):
     executeCommandOverSsh(accessNode, 'echo "DROP KEYSPACE usertable;" > ' + pathDropKeyspaceFile);
     sleep(3);
     cassandraCliCommand = getCassandraCliCommand(accessNode, pathDropKeyspaceFile)
-    executeCommandOverSsh(accessNode, cassandraCliCommand);
+    try:
+        executeCommandOverSsh(accessNode, cassandraCliCommand);
+    except Exception:
+        return
 
 def createKeyspace(accessNode):
     pathCreateKeyspaceFile = "/tmp/create_keyspace"
