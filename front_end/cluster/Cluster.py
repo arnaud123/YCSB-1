@@ -114,14 +114,14 @@ hosts=""" + ",".join(self.getNodesInCluster());
         # This makes the database library use a different node for write and read operations
         extraParameters.extend(['-p', 'writenode=' + cluster.getNodesInCluster()[1]])
         if targetThroughput is not None:
-            targetThroughputLoadThreads = self._getTargetThroughputLoadThreads(requestPeriod, accuracyInMicros,
-                                                                               targetThroughput)
+            targetThroughputLoadThreads = self._getTargetThroughputLoadThreads(requestPeriod, targetThroughput)
             if targetThroughputLoadThreads > 0:
                 extraParameters.extend(['-p', 'addSeparateWorkload=True'])
                 extraParameters.extend(['-threads', str(workloadThreads)])
                 extraParameters.extend(['-target', str(targetThroughputLoadThreads)])
             else:
                 extraParameters.extend(['-p', 'addSeparateWorkload=False'])
+                extraParameters.extend(['-threads', "1"])
         extraParameters.extend(['-p', 'resultfile=' + pathConsistencyResult])
         return getRunCommand(self.getConsistencyBinding(), pathToWorkloadFile, runtimeBenchmarkInMinutes,
                              str(workloadThreads), extraParameters)
@@ -129,17 +129,13 @@ hosts=""" + ",".join(self.getNodesInCluster());
     def addDbSpecificConsistencyBenchmarkParams(self, paramList):
         return paramList
 
-    def _getTargetThroughputLoadThreads(self, requestPeriodInMillis, accuracyInMicros, targetThroughput):
-        throughputNonLoadThreads = self._getThroughputProducedByNonLoadThreads(requestPeriodInMillis, accuracyInMicros)
+    def _getTargetThroughputLoadThreads(self, requestPeriodInMillis, targetThroughput):
+        throughputNonLoadThreads = self._getThroughputProducedByNonLoadThreads(requestPeriodInMillis)
         return max(targetThroughput - throughputNonLoadThreads, 0)
 
-    def _getThroughputProducedByNonLoadThreads(self, requestPeriodInMillis, accuracyInMicros):
+    def _getThroughputProducedByNonLoadThreads(self, requestPeriodInMillis):
         requestPeriodsPerSecond = (1000/requestPeriodInMillis)
-        writesPerSecond = requestPeriodsPerSecond
-        requestPeriodInMicros = requestPeriodInMillis*1000
-        readsPerRequestPeriod = math.ceil(requestPeriodInMicros/accuracyInMicros)
-        readsPerSecond = requestPeriodsPerSecond * readsPerRequestPeriod
-        return int(writesPerSecond + readsPerSecond)
+        return math.floor(2*requestPeriodsPerSecond) # 1 write thread + 1 read thread
 
     def removeNode(self, ipNodeToRemove):
         result = self.doRemoveNode(ipNodeToRemove);
