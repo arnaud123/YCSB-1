@@ -14,7 +14,7 @@ class FileParser(object):
         f.readline()  # Remove header
         writeMeasurementLine = f.readline()
         readMeasurementLine = f.readline()
-        while writeMeasurementLine and readMeasurementLine:
+        while ',' in writeMeasurementLine and ',' in readMeasurementLine:
             consistencyDataset = self._parseWriteAndReadMeasurementLine(writeMeasurementLine, readMeasurementLine,
                                                                         consistencyDataset, delayToWriteInMicros)
             writeMeasurementLine = f.readline()
