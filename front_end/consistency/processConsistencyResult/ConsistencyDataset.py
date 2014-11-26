@@ -17,10 +17,10 @@ class ConsistencyDataset(object):
 
     # Consider invalue if read or read happens after timeout period
     def filterIllegalMeasurements(self, warmUpInMicros, timeoutInMicros):
-        self._removeWriteReadPairsInWarmupPhase(warmUpInMicros)
         for key in self._delayAfterWriteToWriteReadMeasurementMap:
             writeReadPairs = self._delayAfterWriteToWriteReadMeasurementMap[key]
-            newWriteReadPairs = self._removeWriteReadsPairWithTimeout(writeReadPairs, timeoutInMicros)
+            newWriteReadPairs = self._removeWriteReadPairsInWarmupPhase(writeReadPairs, warmUpInMicros)
+            newWriteReadPairs = self._removeWriteReadsPairWithTimeout(newWriteReadPairs, timeoutInMicros)
             self._delayAfterWriteToWriteReadMeasurementMap[key] = newWriteReadPairs
 
     def _removeWriteReadsPairWithTimeout(self, writeReadPairs, timeoutInMicros):
@@ -30,17 +30,23 @@ class ConsistencyDataset(object):
                 result.append(pair)
         return result
 
-    def _removeWriteReadPairsInWarmupPhase(self, warmUpInMicros):
-        smallestTimestamp = self._getSmallestTimestamp()
-        keysToRemove = []
-        for key in self._delayAfterWriteToWriteReadMeasurementMap:
-            if key < smallestTimestamp + warmUpInMicros:
-                keysToRemove.append(key)
-        for key in keysToRemove:
-            del self._delayAfterWriteToWriteReadMeasurementMap[key]
+    def _removeWriteReadPairsInWarmupPhase(self, writeReadPairs, warmUpInMicros):
+        smallestTimestamp = self._getSmallestTimestamp(writeReadPairs)
+        indicesToRemove = []
+        for i in range(len(writeReadPairs)):
+            pair = writeReadPairs[i]
+            if pair.getTimestamp() < smallestTimestamp + warmUpInMicros:
+                indicesToRemove.append(i)
+        for i in indicesToRemove:
+            writeReadPairs.pop(i)
+        return writeReadPairs
 
-    def _getSmallestTimestamp(self):
-        return min(self._delayAfterWriteToWriteReadMeasurementMap.keys())
+    def _getSmallestTimestamp(self, writeReadPairs):
+        smallestTimestamp = writeReadPairs[0].getTimestamp()
+        for pair in writeReadPairs:
+            if pair.getTimestamp() < smallestTimestamp:
+                smallestTimestamp = pair.getTimestamp()
+        return smallestTimestamp
 
     def getPercentageOfConsistentValuesPerDelayAfterWrite(self):
         result = {}

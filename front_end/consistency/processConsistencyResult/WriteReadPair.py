@@ -8,6 +8,9 @@ class WriteReadPair(object):
         self._readMeasurement = readMeasurement
         self._delayOfReadInMicros = delayOfReadInMicros
 
+    def getTimestamp(self):
+        return self._writeMeasurement.getStartTimeInMicros()
+
     def isValidWriteReadPair(self, timeoutInMicros):
         return not self._didReadStartBeforeWrite() and \
                self._didWriteStartBeforeTimeout(timeoutInMicros) and \
