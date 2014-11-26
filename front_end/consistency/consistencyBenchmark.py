@@ -9,13 +9,14 @@ WARM_UP_TIME_IN_SECONDS = 120
 
 def runSingleLoadBenchmark(cluster, runtimeBenchmarkInMinutes, pathForWorkloadFile, outputFile,
                            seedForOperationSelection, requestPeriod, accuracyInMicros, timeoutInMicros,
-                           maxDelayBeforeDrop, stopOnFirstConsistency, workloadThreads,
+                           lastSamplepointInMicros, maxDelayBeforeDrop, stopOnFirstConsistency, workloadThreads,
                            targetThroughputWorkloadThreads):
     prepareDatabaseForBenchmark(cluster, pathForWorkloadFile)
     delayToWriteToResultFileMap = runBenchmark(cluster, runtimeBenchmarkInMinutes, pathForWorkloadFile,
                                                           outputFile, seedForOperationSelection, requestPeriod,
                                                           accuracyInMicros, maxDelayBeforeDrop, stopOnFirstConsistency,
-                                                          workloadThreads, targetThroughputWorkloadThreads)
+                                                          workloadThreads, lastSamplepointInMicros,
+                                                          targetThroughputWorkloadThreads)
     delayToWriteToFilePathPairsForInsert, delayToWriteToFilePathPairsForUpdate = _composeDelayToWriteInMicrosToFilePathPairs(delayToWriteToResultFileMap)
     plotResults(delayToWriteToFilePathPairsForInsert, timeoutInMicros, outputFile + "_insert")
     plotResults(delayToWriteToFilePathPairsForUpdate, timeoutInMicros, outputFile + '_update')
@@ -51,9 +52,9 @@ def loadDatabase(cluster, pathForWorkloadFile):
 
 def runBenchmark(cluster, runtimeBenchmarkInMinutes, pathToWorkloadFile, outputFile,
                  seedForOperationSelection, requestPeriod, accuracyInMicros, maxDelayBeforeDrop,
-                 stopOnFirstConsistency, workloadThreads, targetThroughput=None):
+                 stopOnFirstConsistency, workloadThreads, lastSamplepointInMicros, targetThroughput=None):
     resultFileMap = {}
-    for i in range(1,requestPeriod*1000, accuracyInMicros):
+    for i in range(1, lastSamplepointInMicros+1, accuracyInMicros):
         pathRawInsertData = outputFile + '_insertRawData' + str(i) + 'micros'
         pathRawUpdateData = outputFile + '_updateRawData' + str(i) + 'micros'
         pathConsistencyResult = outputFile + "_CONSISTENCY_RESULT" + str(i) + 'micros'

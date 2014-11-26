@@ -11,7 +11,7 @@ IPS_IN_CLUSTER = ['172.16.8.16', '172.16.8.17', '172.16.8.18', '172.16.8.19']
 DESTINATION_WORKLOAD_FILE = 'workloads/workload_load'
 
 def main():
-    if len(sys.argv) < 13:
+    if len(sys.argv) < 14:
         printUsageAndExit()
     runtimeBenchmarkInMinutes = int(sys.argv[1])
     outputFile = sys.argv[2]
@@ -21,15 +21,16 @@ def main():
     requestPeriod = int(sys.argv[6])
     accuracyInMicros = int(sys.argv[7])
     timeout = int(sys.argv[8])
-    maxDelayBeforeDrop = int(sys.argv[9])
-    stopOnFirstConsistency = (sys.argv[10].lower() == 'true')
-    workloadThreads = int(sys.argv[11])
-    targetThroughputWorkloadThreads = int(sys.argv[12])
+    lastSamplePointInMicros = int(sys.argv[9])
+    maxDelayBeforeDrop = int(sys.argv[10])
+    stopOnFirstConsistency = (sys.argv[11].lower() == 'true')
+    workloadThreads = int(sys.argv[12])
+    targetThroughputWorkloadThreads = int(sys.argv[13])
     cassandraCluster = CassandraCluster(NORMAL_BINDING, CONSISTENCY_BINDING, IPS_IN_CLUSTER, readConsistencyLevel,
                                         writeConsistencyLevel)
     runSingleLoadBenchmark(cassandraCluster, runtimeBenchmarkInMinutes, DESTINATION_WORKLOAD_FILE, outputFile,
-                           seedForOperationSelection, requestPeriod, accuracyInMicros, timeout, maxDelayBeforeDrop,
-                           stopOnFirstConsistency, workloadThreads, targetThroughputWorkloadThreads)
+                           seedForOperationSelection, requestPeriod, accuracyInMicros, timeout, lastSamplePointInMicros,
+                           maxDelayBeforeDrop, stopOnFirstConsistency, workloadThreads, targetThroughputWorkloadThreads)
     
 def printUsageAndExit():
     output = ['Usage: binary']
@@ -41,6 +42,7 @@ def printUsageAndExit():
     output.append('<request period (millis)>')
     output.append('<accuracy (micros)>')
     output.append('<timeout (micros)>')
+    output.append('<last samplepoint (micros)>')
     output.append('<maxDelayBeforeDrop (micros) (<1 for unlimited)>')
     output.append('<stop first consistency (True/False)>')
     output.append('<#workload threads>')
