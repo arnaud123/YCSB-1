@@ -1,6 +1,6 @@
-writePlotToFile <- function(x, xLabel, yLabel, pathOutputFile){
+writePlotToFile <- function(counts, labelCounts, xLabel, yLabel, pathOutputFile){
         png(filename= pathOutputFile);
-        plot(x, xlab=xLabel, ylab=yLabel, main=NULL);
+        barplot(counts, main=NULL, xlab=xLabel, ylab=yLabel, names.arg=labelCounts)
 }
 
 args <- commandArgs(trailingOnly = TRUE)
@@ -14,5 +14,5 @@ pathInputFile = args[1];
 pathOutputFile = args[2];
 
 dataToPlot <- read.csv(file=pathInputFile,head=TRUE,sep=",")
-dataToPlotAsCdf = ecdf(dataToPlot$time_to_reach_consistency)
-writePlotToFile(dataToPlotAsCdf, "Time to reach consistency (µs)", "Probability", pathOutputFile)
+writePlotToFile(dataToPlot$percentage_consistent_values, dataToPlot$read_delay_in_micros,
+                "Delay of read after write (µs)", "Percentage of consistent reads", pathOutputFile)

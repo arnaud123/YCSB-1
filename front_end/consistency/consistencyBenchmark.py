@@ -2,21 +2,23 @@ import subprocess
 
 from util.util import checkExitCodeOfProcess
 from consistency.processConsistencyResult.FileParser import FileParser
-from consistency.processConsistencyResult.plotCdf import plotCdf
+from consistency.processConsistencyResult.plotInconsistencyWindow import plotInconsistencyWindow
 from ycsbClient.runMultipleYcsbClients import executeCommandOnYcsbNodes
 
 WARM_UP_TIME_IN_SECONDS = 120
 
 def runSingleLoadBenchmark(cluster, runtimeBenchmarkInMinutes, pathForWorkloadFile, outputFile,
-                           seedForOperationSelection, requestPeriod, accuracyInMicros, timeout, maxDelayBeforeDrop,
-                           stopOnFirstConsistency, workloadThreads, targetThroughputWorkloadThreads):
+                           seedForOperationSelection, requestPeriod, accuracyInMicros, timeoutInMicros,
+                           maxDelayBeforeDrop, stopOnFirstConsistency, workloadThreads,
+                           targetThroughputWorkloadThreads):
     prepareDatabaseForBenchmark(cluster, pathForWorkloadFile)
-    resultFileMap = runBenchmark(cluster, runtimeBenchmarkInMinutes, pathForWorkloadFile,
+    delayToWriteToResultFileMap = runBenchmark(cluster, runtimeBenchmarkInMinutes, pathForWorkloadFile,
                                                           outputFile, seedForOperationSelection, requestPeriod,
                                                           accuracyInMicros, maxDelayBeforeDrop, stopOnFirstConsistency,
                                                           workloadThreads, targetThroughputWorkloadThreads)
-    # plotResults(pathRawInsertData, outputFile + '_insert', timeout, accuracyInMicros)
-    # plotResults(pathRawUpdateData, outputFile + '_update', timeout, accuracyInMicros)
+    delayToWriteToFilePathPairsForInsert, delayToWriteToFilePathPairsForUpdate = _composeDelayToWriteInMicrosToFilePathPairs(delayToWriteToResultFileMap)
+    plotResults(delayToWriteToFilePathPairsForInsert, timeoutInMicros, outputFile + "_insert")
+    plotResults(delayToWriteToFilePathPairsForUpdate, timeoutInMicros, outputFile + '_update')
 
 def runIncreasingLoadBenchmark(cluster, runtimeBenchmarkInMinutes, pathForWorkloadFile, outputFile,
                                seedForOperationSelection, requestPeriod, accuracyInMicros, timeout, maxDelayBeforeDrop,
@@ -64,9 +66,18 @@ def runBenchmark(cluster, runtimeBenchmarkInMinutes, pathToWorkloadFile, outputF
         resultFileMap[i] = pathRawInsertData, pathRawUpdateData
     return resultFileMap
 
-def plotResults(inputFile, outputFile, timeoutInMicros, accuracyInMicros):
-    fileParser = FileParser()
-    dataAboutConsistency = fileParser.parse(inputFile, timeoutInMicros, accuracyInMicros)
-    dataAboutConsistency.removeWarmUpData(WARM_UP_TIME_IN_SECONDS)
-    dataAboutConsistency.removeInvalidMeasurements()
-    plotCdf(dataAboutConsistency, outputFile)
+def plotResults(delayToWriteToFilePathPairs, timeoutInMicros, outputFile):
+    parser = FileParser()
+    consistencydataset = parser.parse(delayToWriteToFilePathPairs)
+    consistencydataset.filterIllegalMeasurements(WARM_UP_TIME_IN_SECONDS*(10**6), timeoutInMicros)
+    plotInconsistencyWindow(consistencydataset, outputFile)
+
+def _composeDelayToWriteInMicrosToFilePathPairs(delayToWriteToResultFileMap):
+
+    delayToWriteInMicrosToFilePathPairsForInsert = []
+    delayToWriteInMicrosToFilePathPairsForUpdate = []
+    for delayToWrite in sorted(delayToWriteToResultFileMap.keys()):
+        pathRawInsertData, pathRawUpdateData = delayToWriteToResultFileMap[delayToWrite]
+        delayToWriteInMicrosToFilePathPairsForInsert.append((delayToWrite, pathRawInsertData))
+        delayToWriteInMicrosToFilePathPairsForUpdate.append((delayToWrite, pathRawUpdateData))
+    return delayToWriteInMicrosToFilePathPairsForInsert, delayToWriteInMicrosToFilePathPairsForUpdate

@@ -1,15 +1,19 @@
 class Measurement(object):
     
-    def __init__(self, startMeasurement, endMeasurement, value):
-        self._startMeasurement = startMeasurement
-        self._endMeasurement = endMeasurement
+    def __init__(self, timeStamp, startTimeInMicros, endTimeInMicros, value):
+        self._timeStamp = timeStamp
+        self._startTimeInMicros = startTimeInMicros
+        self._endTimeInMicros = endTimeInMicros
         self._value = value
         
-    def getStartMeasurement(self):
-        return self._startMeasurement
+    def getTimeStamp(self):
+        return self._timeStamp
 
-    def getEndMeasurement(self):
-        return self._endMeasurement
+    def getStartTimeInMicros(self):
+        return self._startTimeInMicros
+
+    def getEndTimeInMicros(self):
+        return self._endTimeInMicros
 
     def getValue(self):
         return self._value
