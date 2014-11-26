@@ -17,7 +17,7 @@ def _composePlotDataFile(consistencydataset):
     lines = []
     lines.append("read_delay_in_micros,percentage_consistent_values,total_values")  # Header
     readDelayToPercentageConsistenciesMap = consistencydataset.getPercentageOfConsistentValuesPerDelayAfterWrite()
-    for readDelayInMicros in readDelayToPercentageConsistenciesMap:
+    for readDelayInMicros in sorted(readDelayToPercentageConsistenciesMap):
         percentageConsistentValues = readDelayToPercentageConsistenciesMap[readDelayInMicros]
         totalAmountOfMeasurements = consistencydataset.getAmountOfMeasurements(readDelayInMicros)
         lines.append(str(readDelayInMicros) + "," +
