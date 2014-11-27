@@ -16,8 +16,8 @@ def main():
         printUsageAndExit()
     runtimeBenchmarkInMinutes = int(sys.argv[1])
     outputFile = sys.argv[2]
-    readConsistencyLevel = sys.argv[3]
-    writeConsistencyLevel = sys.argv[4]
+    readPreference = sys.argv[3]
+    writeConcern = sys.argv[4]
     seedForOperationSelection = sys.argv[5]
     requestPeriod = int(sys.argv[6])
     accuracyInMicros = int(sys.argv[7])
@@ -27,8 +27,8 @@ def main():
     stopOnFirstConsistency = (sys.argv[11].lower() == 'true')
     workloadThreads = int(sys.argv[12])
     targetThroughputWorkloadThreads = int(sys.argv[13])
-    # TODO: support consistency levels
-    mongodbCluster = MongoDbCluster(NORMAL_BINDING, CONSISTENCY_BINDING, IPS_IN_CLUSTER, ACCESS_NODES)
+    mongodbCluster = MongoDbCluster(NORMAL_BINDING, CONSISTENCY_BINDING, IPS_IN_CLUSTER, ACCESS_NODES,
+                                    writeConcern, readPreference)
     runSingleLoadBenchmark(mongodbCluster, runtimeBenchmarkInMinutes, DESTINATION_WORKLOAD_FILE, outputFile,
                            seedForOperationSelection, requestPeriod, accuracyInMicros, timeout, lastSamplePointInMicros,
                            maxDelayBeforeDrop, stopOnFirstConsistency, workloadThreads, targetThroughputWorkloadThreads)
@@ -37,8 +37,8 @@ def printUsageAndExit():
     output = ['Usage: binary']
     output.append('<runtime benchmark (min)>')
     output.append('<output file>')
-    output.append('<consistency level reads (ONE, QUORUM, ALL)>')
-    output.append('<consistency level writes> (ONE, QUORUM, ALL)')
+    output.append('<read preference (nearest, primary, primarypreferred, secondary, secondarypreferred)>')
+    output.append('<write concern> (safe, normal, fsync_safe, replicas_safe, majority)')
     output.append('<seed for operation selection>')
     output.append('<request period (millis)>')
     output.append('<accuracy (micros)>')

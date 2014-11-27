@@ -6,12 +6,14 @@ class MongoDbCluster(Cluster):
 
     _MAX_AMOUNT_OF_CONNECTION = 200
 
-    def __init__(self, normalBinding, consistencyBinding, nodesInCluster, accessNodes):
-        # TODO: Add write concern
+    def __init__(self, normalBinding, consistencyBinding, nodesInCluster, accessNodes,
+                 writeConcern="safe", readPreference="primary"):
         super().__init__(normalBinding, consistencyBinding, nodesInCluster)
         self.__databaseName = "ycsb"
         self.__collectionName = "usertable"
         self._accessNodes = accessNodes
+        self._writeConcern = writeConcern
+        self._readPreference = readPreference
 
     def getLoadCommand(self, pathToWorkloadFile, extraParameters = []):
         extraParameters = self._addMongoDbSpecificProperties(extraParameters);
@@ -24,6 +26,8 @@ class MongoDbCluster(Cluster):
     def _addMongoDbSpecificProperties(self, paramList):
         paramList = self._addUrlPropertyToDbBinding(paramList)
         paramList = self._addAmountOfConnectionsToDbBinding(paramList)
+        paramList = self._addWriteConcern(paramList)
+        paramList = self._addReadPreference(paramList)
         return paramList
 
     def _addUrlPropertyToDbBinding(self, paramList):
@@ -32,6 +36,14 @@ class MongoDbCluster(Cluster):
 
     def _addAmountOfConnectionsToDbBinding(self, paramList):
         paramList.extend(['-p', "mongodb.maxconnections=" + str(MongoDbCluster._MAX_AMOUNT_OF_CONNECTION)])
+        return paramList
+
+    def _addWriteConcern(self, paramList):
+        paramList.extend(['-p', "mongodb.writeConcern=" + self._writeConcern])
+        return paramList
+
+    def _addReadPreference(self, paramList):
+        paramList.extend(['-p', "mongodb.readPreference=" + self._readPreference])
         return paramList
 
     def deleteDataInCluster(self):

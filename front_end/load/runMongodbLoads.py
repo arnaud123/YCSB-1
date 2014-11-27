@@ -26,8 +26,6 @@ def main():
                         runtimeBenchmarkInMinutes, dirToWriteResultTo, 
                         listOfOpsPerSec, listOfAmountThreads, listOfAmountOfMachines)
 
-# TODO: Check mongodb driver specific properties
-
 def printUsageAndExit():
     print('usage: binary <path workload file> <result dir> <runtime benchmark> <list of #ops> <list of #threads> <list of #machines> [<list remote ycsb nodes>]')
     exit()

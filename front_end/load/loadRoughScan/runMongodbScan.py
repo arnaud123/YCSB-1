@@ -18,8 +18,6 @@ def main():
     cluster = MongoDbCluster(NORMAL_BINDING, CONSISTENCY_BINDING, IPS_IN_CLUSTER, ACCESS_NODES);
     runRoughScan(cluster, pathToWorkloadFile, pathBenchmarkResult, runtimeBenchmarkInMinutes, listOfAmountOfThreads);
 
-# TODO: Check mongodb driver specific properties
-
 def printUsageAndExit():
     print('usage: binary <path workload file> <result dir> <runtime benchmark> <list of #threads>');
     exit();
