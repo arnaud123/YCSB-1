@@ -1,0 +1,3 @@
+# Usage: binary <runtime benchmark (min)> <output file> <read preference (nearest, primary, primarypreferred, secondary, secondarypreferred)> <write concern (safe, normal, fsync_safe, replicas_safe, majority)> <seed for operation selection> <request period (millis)> <accuracy (micros)> <timeout (micros)> <maxDelayBeforeDrop (micros) (<1 for unlimited)> <stop first consistency (True/False)> <#workload threads> <target throughput workload threads (ops/sec)>
+
+python3 front_end/consistency/runMongodbConsistency.py 15 results/result primary safe 159874549 10 1000 2000 -1 False 20 1000 

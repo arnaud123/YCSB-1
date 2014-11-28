@@ -1,0 +1,2 @@
+#usage: binary <path workload file> <result dir> <runtime benchmark> <list of #ops> <list of #threads> <list of #machines> [<list remote ycsb nodes>] 
+python3 front_end/load/runCouchdbLoads.py workloads/test_workload results 15 10,20,30,40,50,100,150,200,250,300,400,500,600,700 50 1
