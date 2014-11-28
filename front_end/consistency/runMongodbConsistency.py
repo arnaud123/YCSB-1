@@ -38,7 +38,7 @@ def printUsageAndExit():
     output.append('<runtime benchmark (min)>')
     output.append('<output file>')
     output.append('<read preference (nearest, primary, primarypreferred, secondary, secondarypreferred)>')
-    output.append('<write concern> (safe, normal, fsync_safe, replicas_safe, majority)')
+    output.append('<write concern (safe, journal, normal, fsync_safe, replicas_safe, majority)>')
     output.append('<seed for operation selection>')
     output.append('<request period (millis)>')
     output.append('<accuracy (micros)>')

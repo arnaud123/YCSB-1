@@ -54,17 +54,18 @@ def runBenchmark(cluster, runtimeBenchmarkInMinutes, pathToWorkloadFile, outputF
                  seedForOperationSelection, requestPeriod, accuracyInMicros, maxDelayBeforeDrop,
                  stopOnFirstConsistency, workloadThreads, lastSamplepointInMicros, targetThroughput=None):
     resultFileMap = {}
-    for i in range(1, lastSamplepointInMicros+1, accuracyInMicros):
-        pathRawInsertData = outputFile + '_insertRawData' + str(i) + 'micros'
-        pathRawUpdateData = outputFile + '_updateRawData' + str(i) + 'micros'
-        pathConsistencyResult = outputFile + "_CONSISTENCY_RESULT" + str(i) + 'micros'
+    for i in range(0, lastSamplepointInMicros+1, accuracyInMicros):
+        delayToWriteThread = 1 if i == 0 else i
+        pathRawInsertData = outputFile + '_insertRawData_' + str(delayToWriteThread) + '_micros'
+        pathRawUpdateData = outputFile + '_updateRawData_' + str(delayToWriteThread) + '_micros'
+        pathConsistencyResult = outputFile + "_CONSISTENCY_RESULT_" + str(delayToWriteThread) + '_micros'
         extraParameters = []
         command = cluster.getConsistencyRunCommand(pathToWorkloadFile, pathConsistencyResult, runtimeBenchmarkInMinutes,
                                      workloadThreads, outputFile, requestPeriod, seedForOperationSelection,
                                      accuracyInMicros, maxDelayBeforeDrop, stopOnFirstConsistency, cluster,
-                                     targetThroughput, pathRawInsertData, pathRawUpdateData, i, extraParameters)
-        executeCommandOnYcsbNodes(command, command, outputFile + '_ycsb_result' + str(i) + 'micros', [])
-        resultFileMap[i] = pathRawInsertData, pathRawUpdateData
+                                     targetThroughput, pathRawInsertData, pathRawUpdateData, delayToWriteThread, extraParameters)
+        executeCommandOnYcsbNodes(command, command, outputFile + '_ycsb_result_' + str(delayToWriteThread) + '_micros', [])
+        resultFileMap[delayToWriteThread] = pathRawInsertData, pathRawUpdateData
     return resultFileMap
 
 def plotResults(delayToWriteToFilePathPairs, timeoutInMicros, outputFile):

@@ -7,7 +7,7 @@ class MongoDbCluster(Cluster):
     _MAX_AMOUNT_OF_CONNECTION = 200
 
     def __init__(self, normalBinding, consistencyBinding, nodesInCluster, accessNodes,
-                 writeConcern="safe", readPreference="primary"):
+                 writeConcern="journal", readPreference="primary"):
         super().__init__(normalBinding, consistencyBinding, nodesInCluster)
         self.__databaseName = "ycsb"
         self.__collectionName = "usertable"

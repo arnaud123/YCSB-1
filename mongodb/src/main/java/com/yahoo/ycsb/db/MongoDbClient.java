@@ -92,6 +92,8 @@ public class MongoDbClient extends DB {
 				writeConcern = WriteConcern.NONE;
 			} else if ("safe".equals(writeConcernType)) {
 				writeConcern = WriteConcern.SAFE;
+			} else if ("journal".equals(writeConcernType)) {
+				writeConcern = WriteConcern.JOURNAL_SAFE;
 			} else if ("normal".equals(writeConcernType)) {
 				writeConcern = WriteConcern.NORMAL;
 			} else if ("fsync_safe".equals(writeConcernType)) {
@@ -105,7 +107,7 @@ public class MongoDbClient extends DB {
 						.println("ERROR: Invalid writeConcern: '"
 								+ writeConcernType
 								+ "'. "
-								+ "Must be [ none | safe | normal | fsync_safe | replicas_safe ]");
+								+ "Must be [ none | safe | journal | normal | fsync_safe | replicas_safe ]");
 				System.exit(1);
 			}
 			ReadPreference readPreference = null;
