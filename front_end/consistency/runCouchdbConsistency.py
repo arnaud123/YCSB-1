@@ -6,8 +6,8 @@ from consistency.consistencyBenchmark import runSingleLoadBenchmark
 from cluster.CouchdbCluster import CouchdbCluster
 
 NORMAL_BINDING = 'couchdb'
-CONSISTENCY_BINDING = 'couchdb_consistency'
-IPS_IN_CLUSTER = ['172.16.8.16', '172.16.8.17', '172.16.8.18', '172.16.8.19']
+CONSISTENCY_BINDING = 'couchdb'
+IPS_IN_CLUSTER = ['172.16.8.16', '172.16.8.17', '172.16.8.18']
 DESTINATION_WORKLOAD_FILE = 'workloads/workload_load'
 
 def main():
