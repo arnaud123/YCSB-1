@@ -17,6 +17,8 @@ class FileParser(object):
         while ',' in writeMeasurementLine and ',' in readMeasurementLine:
             consistencyDataset = self._parseWriteAndReadMeasurementLine(writeMeasurementLine, readMeasurementLine,
                                                                         consistencyDataset, delayToWriteInMicros)
+            if consistencyDataset is None:
+                break
             writeMeasurementLine = f.readline()
             readMeasurementLine = f.readline()
         f.close()
@@ -27,10 +29,7 @@ class FileParser(object):
         operationTypeWrite, writeMeasurement = self._parseLine(writeMeasurementLine)
         operationTypeRead, readMeasurement = self._parseLine(readMeasurementLine)
         if not operationTypeWrite == "W-0" or not operationTypeRead == "R-0":
-            raise Exception("Illegal order of operationTypes in file: timestamp: " +
-                            str(writeMeasurement.getTimeStamp()) +
-                            " -- operationTypeRead: " + operationTypeRead +
-                            " -- operationTypeWrite: " + operationTypeWrite)
+            return None  # End of file
         consistencyDataset.add(writeMeasurement, readMeasurement, delayToWriteInMicros)
         return consistencyDataset
 
