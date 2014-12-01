@@ -68,7 +68,7 @@
     <!--<module>mapkeeper</module>-->
     <!--<module>infinispan</module>-->
     <!--<module>mapkeeper</module>-->
-    <!--<module>mongodb</module>-->
+    <module>mongodb</module>
     <!--<module>orientdb</module>-->
     <!--<module>nosqldb</module>-->
     <!--<module>redis</module>-->
