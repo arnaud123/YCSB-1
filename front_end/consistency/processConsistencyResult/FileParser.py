@@ -28,9 +28,8 @@ class FileParser(object):
                                           consistencyDataset, delayToWriteInMicros):
         operationTypeWrite, writeMeasurement = self._parseLine(writeMeasurementLine)
         operationTypeRead, readMeasurement = self._parseLine(readMeasurementLine)
-        if not operationTypeWrite == "W-0" or not operationTypeRead == "R-0":
-            return None  # End of file
-        consistencyDataset.add(writeMeasurement, readMeasurement, delayToWriteInMicros)
+        if operationTypeWrite == "W-0" and operationTypeRead == "R-0":
+            consistencyDataset.add(writeMeasurement, readMeasurement, delayToWriteInMicros)
         return consistencyDataset
 
     def _parseLine(self, line):
