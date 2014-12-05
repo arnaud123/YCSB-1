@@ -1,2 +1,12 @@
-#usage: binary <path workload file> <result dir> <runtime benchmark> <list of #ops> <list of #threads> <list of #machines> [<list remote ycsb nodes>] 
-python3 front_end/load/runMongodbLoads.py workloads/test_workload results 15 10,20,50,100,150,200,250,300,400,500,600,700,800,900,1000,1200,1400,1600,1800,2000 40 1
+# usage: binary 
+# <path workload file> 
+# <result dir> 
+# <runtime benchmark> 
+# <read preference (nearest, primary, primarypreferred, secondary, secondarypreferred)> 
+# <write concern (safe, journal, normal, fsync_safe, replicas_safe, majority)> 
+# <list of #ops> 
+# <list of #threads> 
+# <list of #machines> 
+# [<list remote ycsb nodes>]
+
+python3 front_end/load/runMongodbLoads.py workloads/test_workload results 15 primary journal 10,20,50,100,150,200,250,300,400,500,600,700,800,900,1000,1200,1400,1600,1800,2000 40 1

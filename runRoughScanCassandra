@@ -1,2 +1,9 @@
-# usage: binary <path workload file> <result dir> <runtime benchmark> <list of #threads>
-python3 front_end/load/loadRoughScan/runCassandraScan.py workloads/workload_file results/cassandra_scan_result 10 10,20,30,40,50,60,70,80,90,100,110,120
+# usage: binary 
+# <path workload file> 
+# <result dir> 
+# <runtime benchmark> 
+# <write consistency level (ONE, QUORUM, ALL)> 
+# <read consistency level (ONE, QUORUM, ALL)> 
+# <list of #threads>
+
+python3 front_end/load/loadRoughScan/runCassandraScan.py workloads/workload_file results/cassandra_scan_result 15 ONE ONE 10,20,30,40,50,60,70,80,90,100,110,120

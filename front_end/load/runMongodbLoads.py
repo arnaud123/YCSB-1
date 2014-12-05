@@ -5,8 +5,8 @@ from cluster.MongoDbCluster import MongoDbCluster
 
 NORMAL_BINDING = 'mongodb'
 CONSISTENCY_BINDING = 'mongodb'
-IPS_IN_CLUSTER = ['172.16.8.16', '172.16.8.17', '172.16.8.18', '172.16.8.19']
-ACCESS_NODES = []
+IPS_IN_CLUSTER = ['172.16.8.16', '172.16.8.17', '172.16.8.18', '172.16.8.19', '172.16.8.20', '172.16.8.21']
+ACCESS_NODES = ['172.16.8.16']
 
 def main():
     if len(sys.argv) < 9:

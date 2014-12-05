@@ -1,3 +1,16 @@
-# Usage: binary <runtime benchmark (min)> <output file> <consistency level reads (ONE, QUORUM, ALL)> <consistency level writes> (ONE, QUORUM, ALL) <seed for operation selection> <request period (millis)> <accuracy (micros)> <timeout (micros)> <maxDelayBeforeDrop (micros) (<1 for unlimited)> <stop first consistency (True/False)> <#workload threads> <target throughput workload threads (ops/sec)>
+# Usage: binary 
+# <runtime benchmark (min)> 
+# <output file> 
+# <consistency level reads (ONE, QUORUM, ALL)> 
+# <consistency level writes> (ONE, QUORUM, ALL) 
+# <seed for operation selection> 
+# <request period (millis)> 
+# <accuracy (micros)> 
+# <timeout (micros)> 
+# <last samplepoint (micros)> 
+# <maxDelayBeforeDrop (micros) (<1 for unlimited)> 
+# <stop first consistency (True/False)> 
+# <#workload threads> 
+# <target throughput workload threads (ops/sec)>
 
 python3 front_end/consistency/runCassandraSingleLoad.py 15 results/result ONE ONE 159874549 100 1000 1000 20000 -1 False 80 100 

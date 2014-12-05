@@ -5,8 +5,8 @@ from load.loadRoughScan.runRoughScan import runRoughScan
 
 NORMAL_BINDING = 'cassandra-10'
 CONSISTENCY_BINDING = 'cassandra_consistency'
-IPS_IN_CLUSTER = ['172.16.8.16', '172.16.8.17', '172.16.8.18', '172.16.8.19']
-ACCESS_NODES = []
+IPS_IN_CLUSTER = ['172.16.8.16', '172.16.8.17', '172.16.8.18', '172.16.8.19', '172.16.8.20', '172.16.8.21']
+ACCESS_NODES = ['172.16.8.16']
 
 def main():
     if len(sys.argv) < 7:
