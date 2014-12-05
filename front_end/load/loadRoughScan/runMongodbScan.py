@@ -3,8 +3,8 @@ import sys;
 from cluster.MongoDbCluster import MongoDbCluster
 from load.loadRoughScan.runRoughScan import runRoughScan
 
-NORMAL_BINDING = 'cassandra-10'
-CONSISTENCY_BINDING = 'cassandra_consistency'
+NORMAL_BINDING = 'mongodb'
+CONSISTENCY_BINDING = 'mongodb'
 IPS_IN_CLUSTER = ['172.16.8.16', '172.16.8.17', '172.16.8.18', '172.16.8.19', '172.16.8.20', '172.16.8.21']
 ACCESS_NODES = ['172.16.8.16']
 
