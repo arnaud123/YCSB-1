@@ -1,3 +1,3 @@
 # Usage: binary <runtime benchmark (min)> <output file> <seed for operation selection> <request period (millis)> <accuracy (micros)> <timeout (micros)> <last sample point (micros)> <maxDelayBeforeDrop (micros) (<1 for unlimited)> <stop first consistency (True/False)> <#workload threads> <target throughput workload threads (ops/sec)>
 
-python3 front_end/consistency/runCouchdbConsistency.py 15 results/result 159874549 100 500 500 10000 -1 False 50 100
+python3 front_end/consistency/runCouchdbConsistency.py 15 results/result 159874549 100 1000 500 20000 -1 False 60 100

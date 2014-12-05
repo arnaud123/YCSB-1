@@ -52,20 +52,20 @@ public class ReadRunner implements Runnable {
 			long start = System.nanoTime() / 1000;
 			long relativeStart = start- expectedValue;
 			
-			if(start > nextReadTime + maxDelayBeforeDropQuery){
-				System.err.println("\tDrop of query due of time");
-				oneMeasurement.addMeasurement(this.expectedValue,
-						this.type, relativeStart, null, null);
-				return;
-			}
-			
-			if(start > expectedValue + timeout){
-				if(!readValue.checkKey(expectedValue)){
-					oneMeasurement.addMeasurement(this.expectedValue,
-							this.type, relativeStart, timeout, null);
-				}
-				return;
-			}
+			//if(start > nextReadTime + maxDelayBeforeDropQuery){
+			//	System.err.println("\tDrop of query due of time");
+			//	oneMeasurement.addMeasurement(this.expectedValue,
+			//			this.type, relativeStart, null, null);
+			//	return;
+			//}
+			//
+			//if(start > expectedValue + timeout){
+			//	if(!readValue.checkKey(expectedValue)){
+			//		oneMeasurement.addMeasurement(this.expectedValue,
+			//				this.type, relativeStart, timeout, null);
+			//	}
+			//	return;
+			//}
 			
 			// TODO: check of meting in measurement interval ligt
 			ByteIterator readValueAsByteIterator = getReadResult();
@@ -75,13 +75,10 @@ public class ReadRunner implements Runnable {
 			if (readValueAsByteIterator != null) {
 				String temp = readValueAsByteIterator.toString().trim();
 				long time = Long.parseLong(temp);
-
-				this.oneMeasurement.addMeasurement(this.expectedValue, this.type, relativeStart, 
-									Math.min(delay, nextReadTime+maxDelayBeforeDropQuery), time);
+				this.oneMeasurement.addMeasurement(this.expectedValue, this.type, relativeStart, delay, time);
 				readValue.setKey(time);
 			} else {
-				this.oneMeasurement.addMeasurement(this.expectedValue, this.type, relativeStart, 
-									Math.min(delay, nextReadTime+maxDelayBeforeDropQuery), null);
+				this.oneMeasurement.addMeasurement(this.expectedValue, this.type, relativeStart, delay, null);
 				readValue.setReadKey(false);
 			}
 		} catch (Throwable e) {
