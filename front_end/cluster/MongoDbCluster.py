@@ -6,8 +6,7 @@ class MongoDbCluster(Cluster):
 
     _MAX_AMOUNT_OF_CONNECTION = 200
 
-    def __init__(self, normalBinding, consistencyBinding, nodesInCluster, accessNodes,
-                 writeConcern="journal", readPreference="primary"):
+    def __init__(self, normalBinding, consistencyBinding, nodesInCluster, accessNodes, writeConcern, readPreference):
         super().__init__(normalBinding, consistencyBinding, nodesInCluster)
         self.__databaseName = "ycsb"
         self.__collectionName = "usertable"
@@ -22,6 +21,17 @@ class MongoDbCluster(Cluster):
     def getRunCommand(self, pathToWorkloadFile, runtimeBenchmarkInMinutes, amountOfThreads, extraParameters = []):
         extraParameters = self._addMongoDbSpecificProperties(extraParameters);
         return super(MongoDbCluster, self).getRunCommand(pathToWorkloadFile, runtimeBenchmarkInMinutes, amountOfThreads, extraParameters);
+
+    def getConsistencyRunCommand(self, pathToWorkloadFile, pathConsistencyResult, runtimeBenchmarkInMinutes,
+                                 workloadThreads, outputFile, requestPeriod, seedForOperationSelection,
+                                 accuracyInMicros, maxDelayBeforeDrop, stopOnFirstConsistency, cluster,
+                                 targetThroughput, pathRawInsertData, pathRawUpdateData, delayToWriterThreadInMicros, extraParameters = []):
+        extraParameters = self._addMongoDbSpecificProperties(extraParameters)
+        return super().getConsistencyRunCommand(pathToWorkloadFile, pathConsistencyResult, runtimeBenchmarkInMinutes,
+                                 workloadThreads, outputFile, requestPeriod, seedForOperationSelection,
+                                 accuracyInMicros, maxDelayBeforeDrop, stopOnFirstConsistency, cluster,
+                                 targetThroughput, pathRawInsertData, pathRawUpdateData, delayToWriterThreadInMicros,
+                                 extraParameters)
 
     def _addMongoDbSpecificProperties(self, paramList):
         paramList = self._addUrlPropertyToDbBinding(paramList)
