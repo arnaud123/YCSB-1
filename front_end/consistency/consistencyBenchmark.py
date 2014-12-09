@@ -11,7 +11,6 @@ def runSingleLoadBenchmark(cluster, runtimeBenchmarkInMinutes, pathForWorkloadFi
                            seedForOperationSelection, requestPeriod, accuracyInMicros, timeoutInMicros,
                            lastSamplepointInMicros, maxDelayBeforeDrop, stopOnFirstConsistency, workloadThreads,
                            targetThroughputWorkloadThreads):
-    prepareDatabaseForBenchmark(cluster, pathForWorkloadFile)
     delayToWriteToResultFileMap = runBenchmark(cluster, runtimeBenchmarkInMinutes, pathForWorkloadFile,
                                                           outputFile, seedForOperationSelection, requestPeriod,
                                                           accuracyInMicros, maxDelayBeforeDrop, stopOnFirstConsistency,
@@ -55,6 +54,7 @@ def runBenchmark(cluster, runtimeBenchmarkInMinutes, pathToWorkloadFile, outputF
                  stopOnFirstConsistency, workloadThreads, lastSamplepointInMicros, targetThroughput=None):
     resultFileMap = {}
     for i in range(0, lastSamplepointInMicros+1, accuracyInMicros):
+        prepareDatabaseForBenchmark(cluster, pathToWorkloadFile)
         delayToWriteThread = 1 if i == 0 else i
         pathRawInsertData = outputFile + '_insertRawData_' + str(delayToWriteThread) + '_micros'
         pathRawUpdateData = outputFile + '_updateRawData_' + str(delayToWriteThread) + '_micros'
