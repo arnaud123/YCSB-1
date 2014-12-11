@@ -4,7 +4,7 @@ TIMESERIES_GRANULARITY = 2000;
 def getLoadCommand(binding, pathToWorkloadFile, extraParameters = []):
     runCommand = [PATH_YCSB_EXECUTABLE, 'load', binding]; 
     runCommand.extend(['-P', pathToWorkloadFile]);
-    runCommand.extend(extraParameters);z
+    runCommand.extend(extraParameters);
     runCommand.extend(['-threads', str(200)]);
     runCommand.append('-s');
     return runCommand;
