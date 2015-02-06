@@ -2,7 +2,7 @@ import time
 import subprocess
 
 def deleteAllDataInCouchdb(ipsInCluster, database):
-    deleteAllDataInCouchdb(ipsInCluster, database)
+    deleteDatabase(ipsInCluster, database)
     createDatabase(ipsInCluster, database)
     # Wait for replication link to get active
     time.sleep(60)
