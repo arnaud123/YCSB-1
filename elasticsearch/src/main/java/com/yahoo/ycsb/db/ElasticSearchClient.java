@@ -23,6 +23,11 @@ import org.elasticsearch.index.query.RangeFilterBuilder;
 import org.elasticsearch.node.Node;
 import static org.elasticsearch.node.NodeBuilder.*;
 import org.elasticsearch.search.SearchHit;
+import org.elasticsearch.client.transport.TransportClient;
+import org.elasticsearch.common.transport.InetSocketTransportAddress;
+import org.elasticsearch.common.settings.ImmutableSettings;
+import org.elasticsearch.common.settings.Settings;
+import org.elasticsearch.action.admin.cluster.health.ClusterHealthRequest;
 
 /**
  * ElasticSearch client for YCSB framework.
@@ -35,10 +40,11 @@ import org.elasticsearch.search.SearchHit;
  */
 public class ElasticSearchClient extends DB {
 
-    public static final String DEFAULT_CLUSTER_NAME = "es.ycsb.cluster";
-    public static final String DEFAULT_INDEX_KEY = "es.ycsb";
-    private Node node;
-    private Client client;
+    private static final String DEFAULT_CLUSTER_NAME = "es.ycsb.cluster";
+    private static final String DEFAULT_INDEX_KEY = "es.ycsb";
+    private static final String DEFAULT_HOSTS = "localhost";
+    private static final int PORT_NUMBER = 9300;
+    private TransportClient client;
     private String indexKey;
 
     /**
@@ -51,46 +57,19 @@ public class ElasticSearchClient extends DB {
         Properties props = getProperties();
         this.indexKey = props.getProperty("es.index.key", DEFAULT_INDEX_KEY);
         String clusterName = props.getProperty("cluster.name", DEFAULT_CLUSTER_NAME);
-        Boolean newdb = Boolean.parseBoolean(props.getProperty("elasticsearch.newdb", "false"));
-        Builder settings = settingsBuilder()
-                .put("node.local", "true")
-                .put("path.data", System.getProperty("java.io.tmpdir") + "/esdata")
-                .put("discovery.zen.ping.multicast.enabled", "false")
-                .put("index.mapping._id.indexed", "true")
-                .put("index.gateway.type", "none")
-                .put("gateway.type", "none")
-                .put("index.number_of_shards", "1")
-                .put("index.number_of_replicas", "0");
+	String[] hostsInCluster = props.getProperty("hosts", DEFAULT_HOSTS).split(",");
 
-
-        //if properties file contains elasticsearch user defined properties
-        //add it to the settings file (will overwrite the defaults).
-        settings.put(props);
-        System.out.println("ElasticSearch starting node = " + settings.get("cluster.name"));
-        System.out.println("ElasticSearch node data path = " + settings.get("path.data"));
-
-        node = nodeBuilder().clusterName(clusterName).settings(settings).node();
-        node.start();
-        client = node.client();
-
-        if (newdb) {
-            client.admin().indices().prepareDelete(indexKey).execute().actionGet();
-            client.admin().indices().prepareCreate(indexKey).execute().actionGet();
-        } else {
-            boolean exists = client.admin().indices().exists(Requests.indicesExistsRequest(indexKey)).actionGet().isExists();
-            if (!exists) {
-                client.admin().indices().prepareCreate(indexKey).execute().actionGet();
-            }
-        }
+	Settings settings = ImmutableSettings.settingsBuilder().put("cluster.name", clusterName).build();
+        client = new TransportClient(settings);
+	
+	for(String host : hostsInCluster){
+	    client.addTransportAddress(new InetSocketTransportAddress(host, PORT_NUMBER));
+	}
     }
 
     @Override
     public void cleanup() throws DBException {
-        if (!node.isClosed()) {
-            client.close();
-            node.stop();
-            node.close();
-        }
+        client.close();
     }
 
     /**
@@ -240,7 +219,7 @@ public class ElasticSearchClient extends DB {
             final SearchResponse response = client.prepareSearch(indexKey)
                     .setTypes(table)
                     .setQuery(matchAllQuery())
-                    .setFilter(filter)
+                    .setPostFilter(filter)
                     .setSize(recordcount)
                     .execute()
                     .actionGet();

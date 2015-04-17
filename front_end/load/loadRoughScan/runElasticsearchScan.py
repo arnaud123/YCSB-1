@@ -5,7 +5,7 @@ from load.loadRoughScan.runRoughScan import runRoughScan
 
 NORMAL_BINDING = 'elasticsearch'
 CONSISTENCY_BINDING = 'elasticsearch'
-IPS_IN_CLUSTER = ['172.16.8.16', '172.16.8.17', '172.16.8.18', '172.16.8.19']
+IPS_IN_CLUSTER = ['172.16.8.166']
 
 def main():
     if len(sys.argv) < 6:

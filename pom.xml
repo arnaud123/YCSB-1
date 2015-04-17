@@ -62,7 +62,7 @@
     <!--<module>hbase</module>-->
     <!--<module>hypertable</module>-->
     <!--<module>dynamodb</module>-->
-    <!--<module>elasticsearch</module>-->
+    <module>elasticsearch</module>
     <!--<module>gemfire</module>-->
     <!--<module>infinispan</module>-->
     <!--<module>mapkeeper</module>-->
