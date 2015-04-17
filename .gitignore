@@ -5,3 +5,4 @@
 /config
 /front_end/.idea
 *__pycache__*
+*.pyc
