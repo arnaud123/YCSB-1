@@ -44,5 +44,5 @@ class ElasticsearchCluster(Cluster):
         return super().getRunCommand(pathToWorkloadFile, runtimeBenchmarkInMinutes, amountOfThreads, extraParameters)
 
     def __addClusterNameParameter(self, params):
-        params.extend(['-p', 'es.ycsb.cluster=' + self.__clusterName])
+        params.extend(['-p', 'cluster.name=' + self.__clusterName])
         return params
