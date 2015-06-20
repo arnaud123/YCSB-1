@@ -1,0 +1,3 @@
+#!/usr/bin/bash
+
+ssh root@172.16.8.175 'echo -e "use admin\ndb.shutdownServer()" | mongo --port 27018'

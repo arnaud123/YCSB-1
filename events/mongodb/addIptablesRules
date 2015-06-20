@@ -1,0 +1,2 @@
+ssh root@172.16.8.175 'iptables -A INPUT -p tcp --dport 27018 -j DROP'
+ssh root@172.16.8.175 'iptables -A OUTPUT -p tcp --dport 27018 -j DROP'

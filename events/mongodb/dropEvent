@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<events>
+<event id="Down" startInMS="600000">
+/root/YCSB/events/mongodb/addIptablesRules
+</event>
+<event id="Up" startInMS="900000">
+/root/YCSB/events/mongodb/removeIptablesRules
+</event>
+</events>

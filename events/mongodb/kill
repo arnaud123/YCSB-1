@@ -1,0 +1,3 @@
+#!/usr/bin/bash
+
+ssh root@172.16.8.175 'pkill -9 mongod'
