@@ -9,4 +9,4 @@
 #	<eventFile> 
 #	[<list remote ycsb nodes>]'
 
-python3 /root/YCSB/front_end/availability/runMongoDBAvai.py workloads/workload results/result 20 10 10 events/mongodb/stopStartEvent
+python3 /root/YCSB/front_end/availability/runMongoDBAvai.py workloads/workload results/result 20 50 600 events/mongodb/stopStartEvent

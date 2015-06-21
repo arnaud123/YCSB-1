@@ -10,7 +10,7 @@ CONSISTENCY_BINDING = 'mongodb'
 IPS_IN_CLUSTER = ['172.16.8.170', '172.16.8.171', '172.16.8.173', '172.16.8.174', '172.16.8.175']
 ACCESS_NODES = ['172.16.8.170']
 WRITE_CONCERN = 'journal'
-READ_PREFERENCE = 'primary'
+READ_PREFERENCE = 'secondary'
 
 def main():
     if len(sys.argv) < 7:
