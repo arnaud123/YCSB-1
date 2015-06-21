@@ -7,7 +7,7 @@ from plot.YcsbResultData import YcsbResultData;
 from util.util import checkExitCodeOfProcess
 import sys;
 
-R_FILE = "ycsb_front_end/plot/plot_availability_mult.r";
+R_FILE = "front_end/plot/plot_availability_mult.r";
 
 # For testing purposes
 def main():
@@ -92,4 +92,4 @@ def getOperationId(line):
         return None;
     return result;
 
-main();
+# main();
