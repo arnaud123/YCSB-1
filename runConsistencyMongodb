@@ -1,16 +1,16 @@
-# Usage: binary 
-# <runtime benchmark (min)> 
-# <output file> 
-# <read preference (nearest, primary, primarypreferred, secondary, secondarypreferred)> 
-# <write concern (safe, journal, normal, fsync_safe, replicas_safe, majority)> 
-# <seed for operation selection> 
-# <request period (millis)> 
-# <accuracy (micros)> 
-# <timeout (micros)> 
-# <last samplepoint (micros)> 
-# <maxDelayBeforeDrop (micros) (<1 for unlimited)> 
-# <stop first consistency (True/False)> 
-# <#workload threads> 
-# <target throughput workload threads (ops/sec)>
+#!/bin/bash
 
-python3 front_end/consistency/runMongodbConsistency.py 15 results/result primary journal 159874549 100 1000 1000 20000 -1 False 20 1000 
+ipsInCluster="172.16.8.2,172.16.8.3"	# Comma separated list of IPs in cluster (first one is access node)
+runtimeBenchmark=15 			# In minutes
+outputFile="results/result" 		# output file 
+readPreference="primary"		# read preference (nearest, primary, primarypreferred, secondary, secondarypreferred)
+writeConcern="journal"			# write concern (safe, journal, normal, fsync_safe, replicas_safe, majority) 
+seedForOperationSelection=159874549 	# seed for operation selection random generator 
+writePeriod=100 			# write a new timestamp with this period (milliseconds)
+accuracy=1000 				# accuracy in microseconds 
+timeout=1000 				# timeout in microseconds
+lastSamplepoint=20000 			# no read samplepoints this amount of microseconds after writer operation 
+amountOfSideLoadThreads=80 		# amount of YCSB sideload client threads
+requestedThroughputSideLoadThreads=100 	# throughput (operation/sec) requested by sideload client threads
+
+python3 front_end/consistency/runMongodbConsistency.py $ipsInCluster $runtimeBenchmark $outputFile $readPreference $writeConcern $seedForOperationSelection $writePeriod $accuracy $timeout $lastSamplepoint -1 False $amountOfSideloadThreads requestedThroughputSideLoadThreads

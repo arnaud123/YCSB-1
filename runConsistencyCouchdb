@@ -1,15 +1,14 @@
-# Usage: binary 
-# <runtime benchmark (min)> 
-# <output file> 
-# <seed for operation selection> 
-# <request period (millis)> 
-# <accuracy (micros)> 
-# <timeout (micros)> 
-# <last samplepoint (micros)> 
-# <maxDelayBeforeDrop (micros) 
-# (<1 for unlimited)> 
-# <stop first consistency (True/False)> 
-# <#workload threads> 
-# <target throughput workload threads (ops/sec)>
+#!/bin/bash
 
-python3 front_end/consistency/runCouchdbConsistency.py 15 results/result 159874549 100 1000 500 20000 -1 False 60 100
+ipsInCluster="172.16.8.2,172.16.8.3"	# Comma separated list of IPs in CouchDB cluster (first one is master)
+runtimeBenchmark=15 			# Inminutes
+outputFile="results/result" 		# output file 
+seedForOperationSelection=159874549 	# seed for operation selection random generator 
+writePeriod=100 			# write a new timestamp with this period (milliseconds)
+accuracy=1000 				# accuracy in microseconds 
+timeout=1000 				# timeout in microseconds
+lastSamplepoint=20000 			# no read samplepoints this amount of microseconds after writer operation 
+amountOfSideLoadThreads=80 		# amount of YCSB sideload client threads
+requestedThroughputSideLoadThreads=100 	# throughput (operation/sec) requested by sideload client threads
+
+python3 front_end/consistency/runCouchdbConsistency.py $ipsInCluster $runtimeBenchmark $outputFile $seedForOperationSelection $writePeriod $accuracy $timeout $lastSamplepoint -1 False $amountOfSideLoadThreads $requestedThroughputSideLoadThreads

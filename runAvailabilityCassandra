@@ -1,0 +1,13 @@
+#!/usr/bin/bash
+
+ipsInCluster="172.16.8.2,172.16.8.2"		# Comma separated list of ips in Cassandra cluster
+readConsistencyLevel="ONE" 			# consistency level reads (ONE, QUORUM, ALL) 
+writeConsistencyLevel="ONE" 			# consistency level writes> (ONE, QUORUM, ALL) 
+pathWorkloadFile="workloads/workload" 		# Automatically generated workloadfile
+pathResultFile="results/result"  		# Result file
+runtimeBenchmark=20 				# in Minutes
+amountOfClientThreads=50 			# Amount of client threads used by YCSB tool
+requestedThroughput=600 			# Throughput YCSB client threads try to achieve
+eventFile="events/mongodb/stopStartEvent" 	# Event file executed during benchmark (simulate failure events)
+
+python3 front_end/availability/runCassandraAvai.py $ipsIncluster $readConsistencyLevel $writeConsistencyLevel $pathWorkloadFile $pathResultFile $runtimeBenchmark $amountOfClientThreads $requestedThroughput $eventFile

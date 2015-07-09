@@ -1,0 +1,11 @@
+#!/usr/bin/bash
+
+ipsInCluster="172.16.8.2,172.16.8.3"		# Comma separated cluster of IPs in CouchDB cluster (master is first IP)
+pathWorkloadFile="workloads/workload" 		# Automatically generated workloadfile
+pathResultFile="results/result"  		# Result file
+runtimeBenchmark=20 				# in Minutes
+amountOfClientThreads=50 			# Amount of client threads used by YCSB tool
+requestedThroughput=600 			# Throughput YCSB client threads try to achieve
+eventFile="events/mongodb/stopStartEvent" 	# Event file executed during benchmark (simulate failure events)
+
+python3 front_end/availability/runCouchDBAvai.py $ipsInCluster $pathWorkloadFile $pathResultFile $runtimeBenchmark $amountOfClientThreads $requestedThroughput $eventFile
