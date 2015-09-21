@@ -5,7 +5,7 @@ from consistency.processConsistencyResult.FileParser import FileParser
 from consistency.processConsistencyResult.plotInconsistencyWindow import plotInconsistencyWindow
 from ycsbClient.runMultipleYcsbClients import executeCommandOnYcsbNodes
 
-WARM_UP_TIME_IN_SECONDS = 120
+WARM_UP_TIME_IN_SECONDS = 300
 
 def runSingleLoadBenchmark(cluster, runtimeBenchmarkInMinutes, pathForWorkloadFile, outputFile,
                            seedForOperationSelection, requestPeriod, accuracyInMicros, timeoutInMicros,
