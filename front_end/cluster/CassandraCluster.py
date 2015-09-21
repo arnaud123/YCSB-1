@@ -32,6 +32,7 @@ class CassandraCluster(Cluster):
                                  accuracyInMicros, maxDelayBeforeDrop, stopOnFirstConsistency, cluster,
                                  targetThroughput, pathRawInsertData, pathRawUpdateData, delayToWriterThreadInMicros, extraParameters = []):
         extraParameters = self._addConsistencyLevelsToParams(extraParameters)
+        extraParameters = self._addWriteNodeParameter(extraParameters)
         return super().getConsistencyRunCommand(pathToWorkloadFile, pathConsistencyResult, runtimeBenchmarkInMinutes,
                                  workloadThreads, outputFile, requestPeriod, seedForOperationSelection,
                                  accuracyInMicros, maxDelayBeforeDrop, stopOnFirstConsistency, cluster,
@@ -39,13 +40,19 @@ class CassandraCluster(Cluster):
 
     def getLoadCommand(self, pathToWorkloadFile, extraParameters = []):
         extraParameters = self._addConsistencyLevelsToParams(extraParameters)
+        extraParameters = self._addWriteNodeParameter(extraParameters)
         return super().getLoadCommand(pathToWorkloadFile, extraParameters)
 
     def getRunCommand(self, pathToWorkloadFile, runtimeBenchmarkInMinutes, amountOfThreads, extraParameters = []):
         extraParameters = self._addConsistencyLevelsToParams(extraParameters)
+        extraParameters = self._addWriteNodeParameter(extraParameters)
         return super().getRunCommand(pathToWorkloadFile, runtimeBenchmarkInMinutes, amountOfThreads, extraParameters)
 
     def _addConsistencyLevelsToParams(self, params):
         params.extend(['-p', 'cassandra.readconsistencylevel=' + self._readConsistencyLevel])
         params.extend(['-p', 'cassandra.writeconsistencylevel=' + self._writeConsistencyLevel])
+        return params
+
+    def _addWriteNodeParameter(self, params):
+        params.extend(['-p', 'writenode=' + self.getNodesInCluster()[1]])
         return params
