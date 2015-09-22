@@ -26,8 +26,8 @@ class Cluster(object):
         pass;
     
     def writeNormalWorkloadFile(self, remoteYcsbNodes, pathForWorkloadFile):
-        dataToWrite = 'recordcount=100000\n' + \
-        'operationcount=100000000\n' + \
+        dataToWrite = 'recordcount=1000\n' + \
+        'operationcount=1000000\n' + \
         """workload=com.yahoo.ycsb.workloads.CoreWorkload
     
 readallfields=true

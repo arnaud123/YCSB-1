@@ -4,22 +4,30 @@ import subprocess
 def deleteAllDataInCouchdb(ipsInCluster, database):
     deleteDatabase(ipsInCluster, database)
     createDatabase(ipsInCluster, database)
+    setupReplicationLinks(ipsInCluster[0], ipsInCluster[1:], database)
     # Wait for replication link to get active
-    time.sleep(60)
 
 def deleteDatabase(ipsInCluster, database):
+    print(database)
     for ip in ipsInCluster:
         exitCode = subprocess.call(['curl', '-XDELETE', 'http://' + ip + ':5984/' + database])
         if exitCode != 0:
             raise Exception('Failed to delete database ' + database + ' on host ' + ip)
-        time.sleep(5)
+    time.sleep(5)
 
 def createDatabase(ipsInCluster, database):
     for ip in reversed(ipsInCluster):
         exitCode = subprocess.call(['curl', '-XPUT', 'http://' + ip + ':5984/' + database])
         if exitCode != 0:
             raise Exception('Failed to create database ' + database + ' on host ' + ip)
-        time.sleep(5)
+    time.sleep(5)       
+ 
+def setupReplicationLinks(sourceIp, targetIps, database):
+    for targetIp in reversed(targetIps):
+        exitCode = subprocess.call('curl -H \'Content-Type: application/json\' -X POST http://' + sourceIp + ':5984/_replicate -d \'{"source": "' + database + '", "target": "http://' + targetIp + ':5984/' + database + '", "continuous": true}\'', shell=True)
+        if exitCode != 0:
+            raise Exception('Failed to create replication link from ' + sourceIp + ' to ' + targetIp + ' for database ' + database)
+    time.sleep(10)
 
 # def deleteAllDataInCouchdb(ipsInCluster, database):
 #     # Wait for replication to finish

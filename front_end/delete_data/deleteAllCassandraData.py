@@ -1,7 +1,7 @@
 from time import sleep;
 
 from util.util import executeCommandOverSsh
-
+from util.ycsbCommands.Commands import FIELD_COUNT
 
 def clearCassandraKeyspace(ipsInCluster):
     ip = ipsInCluster[0]
@@ -25,17 +25,22 @@ def dropKeyspace(accessNode):
 def createKeyspace(accessNode):
     pathCreateKeyspaceFile = "/tmp/create_keyspace"
     cassandraCliCommands = """\"CREATE KEYSPACE usertable
-with placement_strategy = 'org.apache.cassandra.locator.SimpleStrategy'
-and strategy_options = [{replication_factor:3}];
-use usertable;
-create column family data;\""""
+                                WITH REPLICATION = { 'class' : 'SimpleStrategy',
+                                                     'replication_factor' : 3
+                                };
+                                use usertable;
+                                CREATE TABLE data (
+                                    id text PRIMARY KEY """
+    for i in range(int(FIELD_COUNT)):
+        cassandraCliCommands += ", field" + str(i) + " text"
+    cassandraCliCommands += ") WITH COMPACT STORAGE;\""
     executeCommandOverSsh(accessNode, 'echo ' + cassandraCliCommands + ' > ' + pathCreateKeyspaceFile);
     sleep(3);
     cassandraCliCommand = getCassandraCliCommand(accessNode, pathCreateKeyspaceFile)
     executeCommandOverSsh(accessNode, cassandraCliCommand);
 
 def getCassandraCliCommand(ip, pathCommandFile):
-    return "cassandra-cli -h " + ip + " -f " + pathCommandFile
+    return "cqlsh " + ip + " -f " + pathCommandFile
 
 def executeCompaction(ipsInCluster):
     for ip in ipsInCluster:
