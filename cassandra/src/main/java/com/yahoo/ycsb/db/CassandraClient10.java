@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 import java.util.Vector;
 
@@ -87,8 +88,6 @@ public class CassandraClient10 extends DB
   public static final String DELETE_CONSISTENCY_LEVEL_PROPERTY = "cassandra.deleteconsistencylevel";
   public static final String DELETE_CONSISTENCY_LEVEL_PROPERTY_DEFAULT = "QUORUM";
 
-  public static final String WRITE_NODE_PROPERTY = "writenode";
-  
   Exception errorexception = null;
 
   List<Mutation> mutations = new ArrayList<Mutation>();
@@ -102,9 +101,10 @@ public class CassandraClient10 extends DB
   ConsistencyLevel scanConsistencyLevel = ConsistencyLevel.QUORUM;
   ConsistencyLevel deleteConsistencyLevel = ConsistencyLevel.QUORUM;
 
-  private Client clientForModifications;
-  private Client clientForConsistencyChecks;
+  private List<Client> clients;
   private List<TTransport> trs;
+  
+  private Random randomGenForClientSelection; 
   
   /**
    * Initialize any state for this DB. Called once per DB instance; there is one
@@ -135,18 +135,15 @@ public class CassandraClient10 extends DB
     
     String[] allhosts = hosts.split(",");
     
-    String writeNode = getProperties().getProperty(WRITE_NODE_PROPERTY);
-    
     if(allhosts.length <1)
     	throw new DBException("Al least one hosts required for \"hosts\" property");
     this.trs = new ArrayList<TTransport>();
-    this.clientForModifications = this.createClient(allhosts[0]);
-    
-    if(writeNode != null){
-    	this.clientForConsistencyChecks = this.createClient(writeNode);
-    } else{
-    	this.clientForConsistencyChecks = this.clientForModifications;
+    this.clients = new ArrayList<Client>();
+    for(String host : allhosts){
+    	Client newClient = this.createClient(host);
+    	this.clients.add(newClient);
     }
+    this.randomGenForClientSelection = new Random();
   }
 
 	private Client createClient(String ip) throws DBException {
@@ -176,6 +173,11 @@ public class CassandraClient10 extends DB
 			throw new DBException("Connection failure to server " + ip);
 		this.trs.add(tr);
 		return client;
+	}
+	
+	private Client getRandomClient(){
+		int indexSelectedClient = this.randomGenForClientSelection.nextInt(this.clients.size());
+		return this.clients.get(indexSelectedClient);
 	}
 	
   /**
@@ -227,7 +229,7 @@ public class CassandraClient10 extends DB
 					predicate = new SlicePredicate().setColumn_names(fieldlist);
 				}
 
-				List<ColumnOrSuperColumn> results = this.clientForConsistencyChecks.get_slice(
+				List<ColumnOrSuperColumn> results = this.getRandomClient().get_slice(
 						ByteBuffer.wrap(key.getBytes("UTF-8")), parent,
 						predicate, readConsistencyLevel);
 				
@@ -298,7 +300,7 @@ public class CassandraClient10 extends DB
 
 	        KeyRange kr = new KeyRange().setStart_key(startkey.getBytes("UTF-8")).setEnd_key(new byte[] {}).setCount(recordcount);
 
-	        List<KeySlice> results = this.clientForConsistencyChecks.get_range_slices(parent, predicate, kr, scanConsistencyLevel);
+	        List<KeySlice> results = this.getRandomClient().get_range_slices(parent, predicate, kr, scanConsistencyLevel);
 	        
 	        HashMap<String, ByteIterator> tuple;
 	        for (KeySlice oneresult : results)
@@ -390,7 +392,7 @@ public class CassandraClient10 extends DB
 				mutationMap.put(column_family, mutations);
 				record.put(wrappedKey, mutationMap);
 				
-				this.clientForModifications.batch_mutate(record, writeConsistencyLevel);
+				this.getRandomClient().batch_mutate(record, writeConsistencyLevel);
 				
 				mutations.clear();
 				mutationMap.clear();
@@ -420,7 +422,7 @@ public class CassandraClient10 extends DB
     {
       try
       {
-        this.clientForModifications.remove(ByteBuffer.wrap(key.getBytes("UTF-8")),
+        this.getRandomClient().remove(ByteBuffer.wrap(key.getBytes("UTF-8")),
                       new ColumnPath(column_family),
                       System.currentTimeMillis(),
                       deleteConsistencyLevel);
