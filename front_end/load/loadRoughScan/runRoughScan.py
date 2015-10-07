@@ -1,4 +1,5 @@
 import subprocess;
+import time;
 
 from util.util import checkExitCodeOfProcess;
 from ycsbClient.runMultipleYcsbClients import executeCommandOnYcsbNodes;
@@ -15,6 +16,7 @@ def runRoughScan(cluster, pathToWorkloadFile, pathBenchmarkResult, runtimeBenchm
         cluster.writeNormalWorkloadFile([], pathToWorkloadFile);
         # Load database
         loadDatabase(cluster, pathToWorkloadFile); 
+        time.sleep(120)
         # Start benchmark
         resultFile = pathBenchmarkResult + '_' + amountOfThreads;
         runBenchmark(cluster, pathToWorkloadFile, runtimeBenchmarkInMinutes, resultFile, amountOfThreads);

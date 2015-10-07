@@ -12,7 +12,7 @@ DESTINATION_WORKLOAD_FILE = 'workloads/workload_load'
 def main():
     if len(sys.argv) < 15:
         printUsageAndExit()
-    ipsInCluster = sys.argv[1]
+    ipsInCluster = sys.argv[1].split(",")
     runtimeBenchmarkInMinutes = int(sys.argv[2])
     outputFile = sys.argv[3]
     readPreference = sys.argv[4]
@@ -26,7 +26,7 @@ def main():
     stopOnFirstConsistency = (sys.argv[12].lower() == 'true')
     workloadThreads = int(sys.argv[13])
     targetThroughputWorkloadThreads = int(sys.argv[14])
-    mongodbCluster = MongoDbCluster(NORMAL_BINDING, CONSISTENCY_BINDING, ipsInCluster, ipsInCluster[0],
+    mongodbCluster = MongoDbCluster(NORMAL_BINDING, CONSISTENCY_BINDING, ipsInCluster, [ipsInCluster[0]],
                                     writeConcern, readPreference)
     runSingleLoadBenchmark(mongodbCluster, runtimeBenchmarkInMinutes, DESTINATION_WORKLOAD_FILE, outputFile,
                            seedForOperationSelection, requestPeriod, accuracyInMicros, timeout, lastSamplePointInMicros,

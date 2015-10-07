@@ -6,4 +6,4 @@
 # <write concern (safe, journal, normal, fsync_safe, replicas_safe, majority)> 
 # <list of #threads>
 
-python3 front_end/load/loadRoughScan/runMongodbScan.py workloads/workload_file results/mongodb_scan_result 15 primary journal 2,5,10,15,20,30,40,50,60,70,80,90,100,110,120
+python3 front_end/load/loadRoughScan/runMongodbScan.py workloads/workload_file results/mongodb_scan_result 15 secondary journal 2,5,10,15,20,30,40,50,60,70,80,90,100,110,120

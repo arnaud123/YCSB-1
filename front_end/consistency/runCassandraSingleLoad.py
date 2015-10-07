@@ -12,7 +12,7 @@ DESTINATION_WORKLOAD_FILE = 'workloads/workload_load'
 def main():
     if len(sys.argv) < 15:
         printUsageAndExit()
-    ipsInCluster = sys.argv[1]
+    ipsInCluster = sys.argv[1].split(',')
     runtimeBenchmarkInMinutes = int(sys.argv[2])
     outputFile = sys.argv[3]
     readConsistencyLevel = sys.argv[4]

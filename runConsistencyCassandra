@@ -1,16 +1,16 @@
 #!/bin/bash
 
-ipsInCluster="172.16.8.2,172.16.8.3"	# Comma separated list of IPs in cluster
+ipsInCluster="172.17.8.113,172.17.8.114,172.17.8.116,172.17.8.115"	# Comma separated list of IPs in cluster
 runtimeBenchmark=15 			# Inminutes
 outputFile="results/result" 		# output file 
 readConsistencyLevel="ONE" 		# consistency level reads (ONE, QUORUM, ALL) 
 writeConsistencyLevel="ONE" 		# consistency level writes> (ONE, QUORUM, ALL) 
 seedForOperationSelection=159874549 	# seed for operation selection random generator 
-writePeriod=100 			# write a new timestamp with this period (milliseconds)
-accuracy=1000 				# accuracy in microseconds 
+writePeriod=500 			# write a new timestamp with this period (milliseconds)
+accuracy=250 				# accuracy in microseconds 
 timeout=1000 				# timeout in microseconds
-lastSamplepoint=20000 			# no read samplepoints this amount of microseconds after writer operation 
-amountOfSideLoadThreads=80 		# amount of YCSB sideload client threads
-requestedThroughputSideLoadThreads=100 	# throughput (operation/sec) requested by sideload client threads
+lastSamplepoint=10000 			# no read samplepoints this amount of microseconds after writer operation 
+amountOfSideLoadThreads=100 		# amount of YCSB sideload client threads
+requestedThroughputSideLoadThreads=200 	# throughput (operation/sec) requested by sideload client threads
 
 python3 front_end/consistency/runCassandraSingleLoad.py $ipsInCluster $runtimeBenchmark results/result $readConsistencyLevel $writeConsistencyLevel $seedForOperationSelection $writePeriod $accuracy $timeout $lastSamplepoint -1 False $amountOfSideLoadThreads $requestedThroughputSideLoadThreads

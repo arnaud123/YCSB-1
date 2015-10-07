@@ -5,7 +5,7 @@ from cluster.CassandraCluster import CassandraCluster;
 
 NORMAL_BINDING = 'cassandra-10'
 CONSISTENCY_BINDING = 'cassandra_consistency'
-IPS_IN_CLUSTER = ['172.16.8.16', '172.16.8.17', '172.16.8.18', '172.16.8.19']
+IPS_IN_CLUSTER = ['172.17.8.113', '172.17.8.114', '172.17.8.116', '172.17.8.115']
 
 def main():
     if len(sys.argv) < 9:

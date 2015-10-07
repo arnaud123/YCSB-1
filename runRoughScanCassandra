@@ -6,4 +6,4 @@
 # <read consistency level (ONE, QUORUM, ALL)> 
 # <list of #threads>
 
-python3 front_end/load/loadRoughScan/runCassandraScan.py workloads/workload_file results/cassandra_scan_result 15 ONE ONE 10,20,30,40,50,60,70,80,90,100,110,120
+python3 front_end/load/loadRoughScan/runCassandraScan.py workloads/workload_file results/cassandra_scan_result 15 ONE ONE 5,10,20,30,40,50,60,70,80,90,100,110,120

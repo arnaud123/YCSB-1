@@ -16,6 +16,7 @@ def runLoadBenchmark(cluster, remoteYcsbNodes, pathToWorkloadFile, runtimeBenchm
     loadCommand = cluster.getLoadCommand(pathToWorkloadFile);
     exitCode = subprocess.call(loadCommand);
     checkExitCodeOfProcess(exitCode, 'Loading database failed');
+    sleep(120)
     # Run benchmark
     runCommand = cluster.getRunCommand(pathToWorkloadFile, runtimeBenchmarkInMinutes, amountOfThreads, ['-target', opsPerSec]);
     executeCommandOnYcsbNodes(runCommand, runCommand, fileToWriteResultTo, remoteYcsbNodes);

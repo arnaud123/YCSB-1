@@ -1,4 +1,5 @@
 import subprocess
+import time
 
 from util.util import checkExitCodeOfProcess
 from consistency.processConsistencyResult.FileParser import FileParser
@@ -27,6 +28,7 @@ def runIncreasingLoadBenchmark(cluster, runtimeBenchmarkInMinutes, pathForWorklo
     rawDataPathsUpdate = []
     for targetThroughput in listOfTargetThroughputs:
         prepareDatabaseForBenchmark(cluster, pathForWorkloadFile)
+        time.sleep(120)
         outputFileCurrentTest = outputFile + '_throughput_' + targetThroughput
         (pathRawInsertData, pathRawUpdateData) = runBenchmark(cluster, runtimeBenchmarkInMinutes, pathForWorkloadFile,
                                                               outputFileCurrentTest, seedForOperationSelection,
@@ -55,6 +57,7 @@ def runBenchmark(cluster, runtimeBenchmarkInMinutes, pathToWorkloadFile, outputF
     resultFileMap = {}
     for i in range(0, lastSamplepointInMicros+1, accuracyInMicros):
         prepareDatabaseForBenchmark(cluster, pathToWorkloadFile)
+        time.sleep(120)
         delayToWriteThread = 1 if i == 0 else i
         pathRawInsertData = outputFile + '_insertRawData_' + str(delayToWriteThread) + '_micros'
         pathRawUpdateData = outputFile + '_updateRawData_' + str(delayToWriteThread) + '_micros'
