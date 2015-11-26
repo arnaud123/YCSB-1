@@ -44,7 +44,7 @@ class AggregatedBenchmarkResult:
 #     for aggResult in listOfAggResults:
 #         latency = 0;
 #         counter = 0;
-#         for operation in ['AverageReadLatency', 'AverageInsertLatency', 'AverageUpdateLatency', 
+#         for operation in ['AverageReadLatency', 'AverageInsertLatency', 'AverageUpdateLatency',
 #                       'AverageScanLatency', 'AverageDeleteLatency']:
 #             if aggResult.getAggregatedLatency(operation) > 0:
 #                 latency += aggResult.getAggregatedLatency(operation);
@@ -53,15 +53,23 @@ class AggregatedBenchmarkResult:
 #         f.write(str(expectedThroughput[indexCounter]) + ',' + str(aggResult.getThroughput()) + ', ' + str(latency) + '\n');
 #         indexCounter += 1;
 #     f.close();
-#     
+
 # aggs = [];
-# aggs.append(AggregatedBenchmarkResult(['/home/arnaud/Desktop/load_data/cassandra/1_machines_60_threads_400_ops']));
-# aggs.append(AggregatedBenchmarkResult(['/home/arnaud/Desktop/load_data/cassandra/1_machines_60_threads_600_ops']));
-# aggs.append(AggregatedBenchmarkResult(['/home/arnaud/Desktop/load_data/cassandra/1_machines_60_threads_800_ops']));
-# aggs.append(AggregatedBenchmarkResult(['/home/arnaud/Desktop/load_data/cassandra/1_machines_60_threads_1000_ops']));
-# aggs.append(AggregatedBenchmarkResult(['/home/arnaud/Desktop/load_data/cassandra/1_machines_60_threads_1200_ops']));
-# aggs.append(AggregatedBenchmarkResult(['/home/arnaud/Desktop/load_data/cassandra/1_machines_60_threads_1400_ops']));
-# aggs.append(AggregatedBenchmarkResult(['/home/arnaud/Desktop/load_data/cassandra/1_machines_60_threads_1600_ops']));
-# aggs.append(AggregatedBenchmarkResult(['/home/arnaud/Desktop/load_data/cassandra/1_machines_60_threads_1800_ops']));
-# aggs.append(AggregatedBenchmarkResult(['/home/arnaud/Desktop/load_data/cassandra/1_machines_60_threads_2000_ops']));
-# printMergedAggResultsToFile(aggs, ['400', '600', '800', '1000', '1200', '1400', '1600', '1800', '2000'], '/home/arnaud/Desktop/load_data/cassandra/1_machines_60_threads_RESULT');
+# aggs.append(AggregatedBenchmarkResult(['/tmp/test/1_machines_120_threads_1_ops']));
+# aggs.append(AggregatedBenchmarkResult(['/tmp/test/1_machines_120_threads_5_ops']));
+# aggs.append(AggregatedBenchmarkResult(['/tmp/test/1_machines_120_threads_10_ops']));
+# aggs.append(AggregatedBenchmarkResult(['/tmp/test/1_machines_120_threads_15_ops']));
+# aggs.append(AggregatedBenchmarkResult(['/tmp/test/1_machines_120_threads_20_ops']));
+# aggs.append(AggregatedBenchmarkResult(['/tmp/test/1_machines_120_threads_50_ops']));
+# aggs.append(AggregatedBenchmarkResult(['/tmp/test/1_machines_120_threads_100_ops']));
+# aggs.append(AggregatedBenchmarkResult(['/tmp/test/1_machines_120_threads_150_ops']));
+# aggs.append(AggregatedBenchmarkResult(['/tmp/test/1_machines_120_threads_200_ops']));
+# aggs.append(AggregatedBenchmarkResult(['/tmp/test/1_machines_120_threads_250_ops']));
+# aggs.append(AggregatedBenchmarkResult(['/tmp/test/1_machines_120_threads_300_ops']));
+# aggs.append(AggregatedBenchmarkResult(['/tmp/test/1_machines_120_threads_350_ops']));
+# aggs.append(AggregatedBenchmarkResult(['/tmp/test/1_machines_120_threads_400_ops']));
+# aggs.append(AggregatedBenchmarkResult(['/tmp/test/1_machines_120_threads_450_ops']));
+# aggs.append(AggregatedBenchmarkResult(['/tmp/test/1_machines_120_threads_500_ops']));
+# aggs.append(AggregatedBenchmarkResult(['/tmp/test/1_machines_120_threads_550_ops']));
+# aggs.append(AggregatedBenchmarkResult(['/tmp/test/1_machines_120_threads_600_ops']));
+# printMergedAggResultsToFile(aggs, ['1', '5', '10', '15', '20', '50', '100', '150', '200', '250', '300', '350', '400', '450', '500', '550', '600'], '/tmp/test/RESULT');

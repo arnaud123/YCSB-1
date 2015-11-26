@@ -1,3 +1,4 @@
+from json.encoder import INFINITY
 from consistency.processConsistencyResult.WriteReadPair import WriteReadPair
 
 __author__ = 'arnaud'
@@ -56,6 +57,8 @@ class ConsistencyDataset(object):
             if pair.isConsistent():
                 counterConsistentValues += 1
             counterTotalValues +=1
+        if counterTotalValues == 0:
+            return 0
         return counterConsistentValues/counterTotalValues
 
     def getAmountOfMeasurements(self, delayAfterWriteInMicros):
